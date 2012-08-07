@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_org_weeels_dispatcher_domain_RideRequest" update="false" object="${riderequest}" path="/riderequests" z="BVtKEUnmfIis1xGo0fdcI+dUvwg=">
+        <field:display field="rider" id="s_org_weeels_dispatcher_domain_RideRequest_rider" object="${riderequest}" z="cprtCsAnkvOX/enJSzbYHoUBhFs="/>
+        <field:display field="numPassengers" id="s_org_weeels_dispatcher_domain_RideRequest_numPassengers" object="${riderequest}" z="ml93UZQpWswFjKgcI84hW+YBLdU="/>
+        <field:display field="pickUpLocation" id="s_org_weeels_dispatcher_domain_RideRequest_pickUpLocation" object="${riderequest}" z="IM1dOQr0Xe4oDxXwD91qQH6vJSI="/>
+        <field:display field="dropOffLocation" id="s_org_weeels_dispatcher_domain_RideRequest_dropOffLocation" object="${riderequest}" z="65BU5zeUy3rrwJdAworxfdRd4is="/>
+        <field:display field="requestTime" id="s_org_weeels_dispatcher_domain_RideRequest_requestTime" object="${riderequest}" z="GJeqN1CiUMuAvsifompezxBY2FM="/>
+        <!--  <field:display calendar="true" dateTimePattern="${rideRequest_requesttime_date_format}" field="requestTime" id="s_org_weeels_dispatcher_domain_RideRequest_requestTime" object="${riderequest}" z="GJeqN1CiUMuAvsifompezxBY2FM="/>
+        -->
+    </page:show>
+</div>

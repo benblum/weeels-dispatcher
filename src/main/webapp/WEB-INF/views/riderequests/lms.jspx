@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_org_weeels_dispatcher_domain_RideRequest" modelAttribute="rideRequestMessage" path="/riderequests/lms" render="${empty dependencies}" >
+        <field:input field="requestId" id="c_lms_Request_id" />
+        <field:input field="name" id="c_lms_Request_name" />
+        <field:input field="partySize" id="c_lms_Request_numPassengers" />
+        <field:input field="luggageSize" id="c_lms_Request_luggage" />
+        <field:input field="inputAddressPickup" id="c_lms_Request_inputAddressPickUp" />
+        <field:input field="formattedAddressPickup" id="c_lms_Request_formattedAddressPickUp" />
+        <field:input field="latPickup" id="c_lms_Request_latPickup" />
+        <field:input field="lonPickup" id="c_lms_Request_lonPickup" />
+        <field:input field="inputAddressDropoff" id="c_lms_Request_inputAddressDropOff" />
+        <field:input field="formattedAddressDropoff" id="c_lms_Request_formattedAddressDropOff" />
+        <field:input field="latDropoff" id="c_lms_Request_latDropoff" />
+        <field:input field="lonDropoff" id="c_lms_Request_lonDropoff" />
+        <field:datetime dateTimePattern="${rideRequest_requesttime_date_format}" field="requestTime" id="c_lms_Request_requestTime" />
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_org_weeels_dispatcher_domain_RideRequest" render="${not empty dependencies}" />
+</div>

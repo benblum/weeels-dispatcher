@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_org_weeels_dispatcher_domain_RideBooking" modelAttribute="rideBooking" path="/ridebookings" render="${empty dependencies}" z="Mpn/H4GyJ61Gzi9MwBgV+MsR3QY=">
+        <field:select field="rideRequests" id="c_org_weeels_dispatcher_domain_RideBooking_rideRequests" itemValue="id" items="${riderequests}" multiple="true" path="/riderequests" z="IaeOGlAjgEuZPVrrrhS6Sb1fOMo="/>
+        <field:select field="itinerary" id="c_org_weeels_dispatcher_domain_RideBooking_itinerary" itemValue="id" items="${itinerarys}" path="/itinerarys" z="JO0fBA3ci8CqkP9Otv8mr6CgQ6g="/>
+        <field:input field="destination" id="c_org_weeels_dispatcher_domain_RideBooking_destination" z="PGDWCXfSS16NQSMeDpy6vf/6LL0="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_org_weeels_dispatcher_domain_RideBooking" render="${not empty dependencies}" z="XxRZLFqcXEfeVTnQZ3f2X+i/RJk="/>
+</div>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_org_weeels_dispatcher_domain_Itinerary_Stop" modelAttribute="stop" path="/itinerarys/${itineraryId}/stops" render="${empty dependencies}" z="n4a1BZMTIWbmrLK8TIVRks8wgv8=">
+        <field:input field="location.address" id="c_org_weeels_dispatcher_domain_Itinerary_Stop_location_address" z="YkT8w9+dHKbOwEpahc21Y+RxpHM="/>
+        <field:input field="location.lat" id="c_org_weeels_dispatcher_domain_Itinerary_Stop_location_lat" z="KtWCTwQSLUvqhklj1SCpFqUdJJY="/>
+        <field:input field="location.lon" id="c_org_weeels_dispatcher_domain_Itinerary_Stop_location_lon" z="cYQp5sExbUczQZ+FHIpjqRIhgoY="/>
+        <field:select field="ridersToPickUp" id="c_org_weeels_dispatcher_domain_Itinerary_Stop_ridersToPickUp" itemValue="id" items="${riders}" multiple="true" path="/riders" z="3ZTVJVXACcB8dKMwZKFIMfXrqlQ="/>
+    	<field:select field="ridersToDropOff" id="c_org_weeels_dispatcher_domain_Itinerary_Stop_ridersToDropOff" itemValue="id" items="${riders}" multiple="true" path="/riders" z="3ZTVJVXACcB8dKMwZKFIMfXrqlQ="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_org_weeels_dispatcher_domain_Stop" render="${not empty dependencies}" z="z9LM3pL+YIzL2weIUyX+58jTQHM="/>
+</div>

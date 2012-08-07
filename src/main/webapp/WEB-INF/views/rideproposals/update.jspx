@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_org_weeels_dispatcher_domain_RideProposal" modelAttribute="rideProposal" path="/rideproposals" versionField="none" z="g13dr/tWpEBpwSRrM/1lR8SWke0=">
+        <field:input field="fare" id="c_org_weeels_dispatcher_domain_RideProposal_fare" z="c/vFL2PZalxHHkSDbOOodhAhuoM="/>
+        <field:select field="itinerary" id="c_org_weeels_dispatcher_domain_RideProposal_itinerary" itemValue="id" items="${itinerarys}" path="/itinerarys" z="BjuKevQjj9hsMuSH0uYcBAITaS4="/>
+        <field:select field="rideBookingToUpdate" id="c_org_weeels_dispatcher_domain_RideProposal_rideBookingToUpdate" itemValue="id" items="${ridebookings}" path="/ridebookings" z="1TrMnLQyzpXkJLaSQEmxVvWoe5A="/>
+        <field:select field="rideRequest" id="c_org_weeels_dispatcher_domain_RideProposal_rideRequest" itemValue="id" items="${riderequests}" path="/riderequests" z="11rwQtiTGi1ILhWbxXev+VEYDSk="/>
+    </form:update>
+</div>

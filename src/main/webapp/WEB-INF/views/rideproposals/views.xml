@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="rideproposals/list">
+        <put-attribute name="body" value="/WEB-INF/views/rideproposals/list.jspx"/>
+    </definition>
+<definition extends="default" name="rideproposals/show">
+        <put-attribute name="body" value="/WEB-INF/views/rideproposals/show.jspx"/>
+    </definition>
+<definition extends="default" name="rideproposals/create">
+        <put-attribute name="body" value="/WEB-INF/views/rideproposals/create.jspx"/>
+    </definition>
+<definition extends="default" name="rideproposals/update">
+        <put-attribute name="body" value="/WEB-INF/views/rideproposals/update.jspx"/>
+    </definition>
+</tiles-definitions>

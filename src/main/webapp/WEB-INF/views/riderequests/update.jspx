@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_org_weeels_dispatcher_domain_RideRequest" modelAttribute="rideRequest" path="/riderequests" versionField="none" z="QUjaxMp1HGmt5CFQ9Avu48lxxPg=">
+        <field:select field="rider" id="c_org_weeels_dispatcher_domain_RideRequest_rider" itemValue="id" items="${riders}" path="/riders" z="tD1NCL+rAEbSUs+/ueeqcnLqj9Q="/>
+        <field:input field="numPassengers" id="c_org_weeels_dispatcher_domain_RideRequest_numPassengers" z="UFDCowXKSgG8Nwu0EktqKNQ0Z2U="/>
+        <field:select field="pickUpLocation" id="c_org_weeels_dispatcher_domain_RideRequest_pickUpLocation" itemValue="id" items="${locations}" path="/locations" z="ggfZLpWRUyKSpcPeaP2l0ZR+Vbc="/>
+        <field:select field="dropOffLocation" id="c_org_weeels_dispatcher_domain_RideRequest_dropOffLocation" itemValue="id" items="${locations}" path="/locations" z="TkMbpnd0G94wprRI7Pu/DvcPBCc="/>
+        <field:datetime dateTimePattern="${rideRequest_requesttime_date_format}" field="requestTime" id="c_org_weeels_dispatcher_domain_RideRequest_requestTime" z="s/Tc+76Pn+XebLWgWF8b0qAr9CA="/>
+        <field:select field="rideBooking" id="c_org_weeels_dispatcher_domain_RideRequest_rideBooking" itemValue="id" items="${ridebookings}" path="/ridebookings" z="4fEst9JafthiLFj2+WJSykPzzGs="/>
+        <field:input field="rideProposals" id="c_org_weeels_dispatcher_domain_RideRequest_rideProposals" z="hiEY6jN0OnuliEUTEmTteJWd/lg="/>
+    </form:update>
+</div>

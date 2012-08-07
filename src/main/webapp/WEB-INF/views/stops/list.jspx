@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_weeels_dispatcher_domain_Itinerary_stops" items="${stops}" z="YgtHv/DqUzTawFzrOaU7TZe/YoE=">
+        <table:table data="${stops}" typeIdFieldName="index" id="l_org_weeels_dispatcher_domain_Stop" path="/itinerarys/${itineraryId}/stops" update="false" delete="false">
+            <table:column id="c_org_weeels_dispatcher_domain_Itinerary_Stop_location" property="location" z="XgQI6Cdwydrgvp9OW5v7ILOjMQE="/>
+            <table:column id="c_org_weeels_dispatcher_domain_Itinerary_Stop_ridersToPickUp" property="ridersToPickUp" z="irItkuyMt9H6HL4GRw30iGZC8uA="/>
+            <table:column id="c_org_weeels_dispatcher_domain_Itinerary_Stop_ridersToDropOff" property="ridersToDropOff" z="jbT5/zbsNidmOn808Qwq0GXOPZ8="/>
+        </table:table>
+    </page:list>
+</div>

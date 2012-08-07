@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_rider" z="Ib6FlOsW4fUiqgI3a0g1KSM731s=">
+            <menu:item id="i_rider_new" messageCode="global_menu_new" url="/riders?form" z="PgJxjQTakx6lZc8QhlEyFLi4Bwk="/>
+            <menu:item id="i_rider_list" messageCode="global_menu_list" url="/riders?page=1&amp;size=${empty param.size ? 10 : param.size}" z="7rX3MizfvBhUUYOwjGIcatwtasE="/>
+        </menu:category>
+        <menu:category id="c_riderequest" z="36PgSf2s79c3S1duj6n3z8V7N54=">
+            <menu:item id="i_riderequest_new" messageCode="global_menu_new" url="/riderequests?form" z="SVV6xhXgBiM18+0FcYkMpc3PVrs="/>
+            <menu:item id="i_riderequest_lms" messageCode="global_menu_new" url="/riderequests?lms"/>
+            <menu:item id="i_riderequest_list" messageCode="global_menu_list" url="/riderequests?page=1&amp;size=${empty param.size ? 10 : param.size}" z="HhV1Xyc30OrBY2SP+zmP4svThG0="/>
+        </menu:category>
+        <menu:category id="c_rideproposal" z="6ZRpfg27tQc0LgvpwyrqioL/20A=">
+            <menu:item id="i_rideproposal_new" messageCode="global_menu_new" url="/rideproposals?form" z="X/XQ0zNuyLfWm07GJCROdswNYjA="/>
+            <menu:item id="i_rideproposal_list" messageCode="global_menu_list" url="/rideproposals?page=1&amp;size=${empty param.size ? 10 : param.size}" z="hkEy81IhYeNEVc993VfVgAxqhH8="/>
+        </menu:category>
+        <menu:category id="c_ridebooking" z="NqbQk16ImameoVKz6MFn2kDQHtc=">
+            <menu:item id="i_ridebooking_new" messageCode="global_menu_new" url="/ridebookings?form" z="YeGcYUEYeYflBbal9JKjSSQkjlk="/>
+            <menu:item id="i_ridebooking_list" messageCode="global_menu_list" url="/ridebookings?page=1&amp;size=${empty param.size ? 10 : param.size}" z="AgsYBTQbwS5Us+xprLJE9eedavY="/>
+        </menu:category>
+        <menu:category id="c_maintenance">
+        	<menu:item id="i_maintenance_database" confirmMessageCode="database_initialize_confirm" messageCode="global_menu_init" url="/database?init" />
+        </menu:category>
+    </menu:menu>
+</div>

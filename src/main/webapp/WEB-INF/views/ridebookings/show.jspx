@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_org_weeels_dispatcher_domain_RideBooking" object="${ridebooking}" update="false" create="false" path="/ridebookings" z="RpdeHtt+blm4K2L/RA1QBu5l6Ng=">
+        <field:display field="rideRequests" id="s_org_weeels_dispatcher_domain_RideBooking_rideRequests" object="${ridebooking}" z="A1eYpPf3lGKdd4foDnYVpn1zABQ="/>
+        <field:display field="itinerary" id="s_org_weeels_dispatcher_domain_RideBooking_itinerary" object="${ridebooking}" z="BVKdujooNDA4IE8p2twrrtX3F4Q="/>
+    </page:show>
+</div>

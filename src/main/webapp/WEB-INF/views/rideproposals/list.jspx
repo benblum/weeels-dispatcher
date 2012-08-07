@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_org_weeels_dispatcher_domain_RideProposal" items="${rideproposals}" z="/NuUhkkDagPN+M/aLfsxY9MY89o=">
+        <table:table data="${rideproposals}" id="l_org_weeels_dispatcher_domain_RideProposal" path="/rideproposals" z="dSfc/VYYi8WGm+x82bxyyXrUcLY=">
+            <table:column id="c_org_weeels_dispatcher_domain_RideProposal_fare" property="fare" z="K2WlGBqwyg7wiZrcjn/O93D+uSM="/>
+            <table:column id="c_org_weeels_dispatcher_domain_RideProposal_itinerary" property="itinerary" z="advdVYk3Xqro5Q9AycASAWYGYns="/>
+            <table:column id="c_org_weeels_dispatcher_domain_RideProposal_rideBookingToUpdate" property="rideBookingToUpdate" z="J0ljzeGyKyucmn3oenk39WTZVxk="/>
+            <table:column id="c_org_weeels_dispatcher_domain_RideProposal_rideRequest" property="rideRequest" z="Kz5lRzOAE+VOxkAONR0aP8YRVBo="/>
+        </table:table>
+    </page:list>
+</div>

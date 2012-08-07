@@ -2,6 +2,7 @@
 .project
 .settings
 .classpath
+.springBeans
 target
 tomcat.5000
 bin

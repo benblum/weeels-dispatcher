@@ -5,17 +5,14 @@ import flexjson.JSONSerializer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.validation.constraints.NotNull;
-
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.*;
 
 @Document
-public class RideProposal {
+public @Data @NoArgsConstructor class RideProposal {
 
     private double fare;
     
@@ -38,13 +35,6 @@ public class RideProposal {
 		this.rideBookingToUpdate = rideBooking;
 	}
 
-	public RideProposal() {
-	}
-
-	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-
 	public String toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
@@ -60,48 +50,4 @@ public class RideProposal {
 	public static Collection<RideProposal> fromJsonArrayToRideProposals(String json) {
         return new JSONDeserializer<List<RideProposal>>().use(null, ArrayList.class).use("values", RideProposal.class).deserialize(json);
     }
-
-	public String getId() {
-        return this.id;
-    }
-
-	public void setId(String id) {
-        this.id = id;
-    }
-
-	public double getFare() {
-        return this.fare;
-    }
-
-	public void setFare(double fare) {
-        this.fare = fare;
-    }
-
-	public Itinerary getItinerary() {
-        return this.itinerary;
-    }
-
-	public void setItinerary(Itinerary itinerary) {
-        this.itinerary = itinerary;
-    }
-
-	public RideBooking getRideBookingToUpdate() {
-        return this.rideBookingToUpdate;
-    }
-
-	public void setRideBookingToUpdate(RideBooking rideBookingToUpdate) {
-        this.rideBookingToUpdate = rideBookingToUpdate;
-    }
-
-	public RideRequest getRideRequest() {
-		return rideRequest;
-	}
-
-	public void setRideRequest(RideRequest rideRequest) {
-		this.rideRequest = rideRequest;
-	}
-	
-	public boolean equals(RideProposal other) {
-		return other.getId().equals(this.id);
-	}
 }

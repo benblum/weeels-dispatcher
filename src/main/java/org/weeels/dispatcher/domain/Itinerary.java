@@ -5,27 +5,29 @@ import flexjson.JSONSerializer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class Itinerary {
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+public @Data @NoArgsConstructor class Itinerary {
 	
 	private Location destination;
-	
-	public Itinerary() {
-		
-	}
+	private List<Stop> stops = new ArrayList<Stop>();
 	
 	public Itinerary(Itinerary other) {
 		this.stops = new ArrayList<Stop>(other.stops);
 	}
 
-	private List<Stop> stops = new ArrayList<Stop>();
+	public void addStop(Stop stop) {
+		stops.add(stop);
+		destination = stop.getLocation();
+	}
 
-	public List<Stop> getStops() {
-        return this.stops;
-    }
-
+	public Stop getStop(int i) {
+		return stops.get(i);
+	}
+	
 	public void setStops(List<Stop> stops) {
         this.stops = stops;
         destination = stops.get(stops.size()-1).getLocation();
@@ -47,24 +49,4 @@ public class Itinerary {
         return new JSONDeserializer<List<Itinerary>>().use(null, ArrayList.class).use("values", Itinerary.class).deserialize(json);
     }
 
-	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-
-	public void setDestination(Location destination) {
-		this.destination = destination;
-	}
-	
-	public Location getDestination() {
-		return destination;
-	}
-	
-	public void addStop(Stop stop) {
-		stops.add(stop);
-		destination = stop.getLocation();
-	}
-
-	public Stop getStop(int i) {
-		return stops.get(i);
-	}
 }

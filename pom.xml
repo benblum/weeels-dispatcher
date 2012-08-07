@@ -24,11 +24,15 @@
             <url>http://maven.springframework.org/milestone</url>
         </repository>
  
-    <repository>
+    	<repository>
             <id>spring-maven-snapshot</id>
             <url>http://maven.springframework.org/milestone</url>
             <name>Spring Maven MILESTONE Repository</name>
         </repository>
+        <repository>
+   		 <id>projectlombok.org</id>
+    		<url>http://projectlombok.org/mavenrepo</url>
+  		</repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -87,7 +91,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.1</version>
         </dependency>
-        <!-- ROO dependencies -->
         <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -214,6 +217,12 @@
     	<artifactId>jackson-mapper-asl</artifactId>
     	<version>1.9.2</version>
     </dependency>
+    <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>0.11.2</version>
+    <scope>provided</scope>
+  	</dependency>
     </dependencies>
     <build>
         <plugins>

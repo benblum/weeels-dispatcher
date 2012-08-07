@@ -1,11 +1,10 @@
 package org.weeels.dispatcher.lms.message;
 
-public class MatchRequestMessage {
+import lombok.*;
+
+public @Data @NoArgsConstructor class MatchRequestMessage {
 	public String[] requestIds;
 	
-	public MatchRequestMessage() {
-	}
-
 	public MatchRequestMessage(String requestId0, String requestId1) {
 		this.requestIds = new String[2];
 		this.requestIds[0] = requestId0;

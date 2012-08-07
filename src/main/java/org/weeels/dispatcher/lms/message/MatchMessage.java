@@ -1,13 +1,11 @@
 package org.weeels.dispatcher.lms.message;
 
+import lombok.*;
 import org.weeels.dispatcher.domain.RideBooking;
 
-public class MatchMessage {
+public @Data @NoArgsConstructor class MatchMessage {
 	public String matchId;
 	public String[] requestIds;
-	
-	public MatchMessage() {
-	}
 	
 	public MatchMessage(RideBooking ride) {
 		matchId = ride.getId();

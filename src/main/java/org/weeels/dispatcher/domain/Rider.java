@@ -9,30 +9,15 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.*;
 
 @Document
-public class Rider {
+public @Data class Rider {
 
     private String name;
     private String email;
 	@Id
     private String id;
-
-	public String getId() {
-        return this.id;
-    }
-
-	public void setId(String id) {
-        this.id = id;
-    }
-
-	public String getName() {
-        return this.name;
-    }
-
-	public void setName(String name) {
-        this.name = name;
-    }
 
 	public String toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);
@@ -49,16 +34,4 @@ public class Rider {
 	public static Collection<Rider> fromJsonArrayToRiders(String json) {
         return new JSONDeserializer<List<Rider>>().use(null, ArrayList.class).use("values", Rider.class).deserialize(json);
     }
-
-	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 }

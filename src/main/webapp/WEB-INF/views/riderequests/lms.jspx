@@ -5,8 +5,9 @@
     <form:create id="fc_org_weeels_dispatcher_domain_RideRequest" modelAttribute="rideRequestMessage" path="/riderequests/lms" render="${empty dependencies}" >
         <field:input field="requestId" id="c_lms_Request_id" />
         <field:input field="name" id="c_lms_Request_name" />
-        <field:input field="partySize" id="c_lms_Request_numPassengers" />
-        <field:input field="luggageSize" id="c_lms_Request_luggage" />
+        <field:input field="email" id="c_lms_Request_email" />
+        <field:input field="partySize" id="c_lms_Request_partySize" />
+        <field:input field="luggage" id="c_lms_Request_luggage" />
         <field:input field="inputAddressPickup" id="c_lms_Request_inputAddressPickUp" />
         <field:input field="formattedAddressPickup" id="c_lms_Request_formattedAddressPickUp" />
         <field:input field="latPickup" id="c_lms_Request_latPickup" />
@@ -15,7 +16,8 @@
         <field:input field="formattedAddressDropoff" id="c_lms_Request_formattedAddressDropOff" />
         <field:input field="latDropoff" id="c_lms_Request_latDropoff" />
         <field:input field="lonDropoff" id="c_lms_Request_lonDropoff" />
-        <field:datetime dateTimePattern="${rideRequest_requesttime_date_format}" field="requestTime" id="c_lms_Request_requestTime" />
-    </form:create>
+        <field:input field="requestTime" id="c_lms_Request_requestTime" />
+        <field:input field="neighborhood" id="c_lms_Request_neighborhood" />
+        </form:create>
     <form:dependency dependencies="${dependencies}" id="d_org_weeels_dispatcher_domain_RideRequest" render="${not empty dependencies}" />
 </div>

@@ -38,6 +38,7 @@ public class RabbitMessageHandler {
 			// Add a dummy rider specific to this request.
 			Rider rider = new Rider();
 			rider.setName("LMS_"+msg.name);
+			rider.setEmail(msg.getEmail());
 			riderRepository.save(rider);
 			RideRequest rideRequest = msg.toRideRequest(rider);
 			rideRequestRepository.save(rideRequest);

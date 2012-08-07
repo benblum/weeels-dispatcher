@@ -14,6 +14,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Rider {
 
     private String name;
+    private String email;
+	@Id
+    private String id;
+
+	public String getId() {
+        return this.id;
+    }
+
+	public void setId(String id) {
+        this.id = id;
+    }
 
 	public String getName() {
         return this.name;
@@ -43,14 +54,11 @@ public class Rider {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-	@Id
-    private String id;
+	public String getEmail() {
+		return email;
+	}
 
-	public String getId() {
-        return this.id;
-    }
-
-	public void setId(String id) {
-        this.id = id;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

@@ -5,6 +5,7 @@
     <page:list id="pl_org_weeels_dispatcher_domain_Rider" items="${riders}" z="y4nlejRULAJ4mUBa6kMVRbwOZbM=">
         <table:table data="${riders}" id="l_org_weeels_dispatcher_domain_Rider" path="/riders" z="s0n4zJE94jJDqfkodJnNg6F/oSQ=">
             <table:column id="c_org_weeels_dispatcher_domain_Rider_name" property="name" z="EhEbmtRyrTLalLaU3x3W1aUlrxY="/>
+            <table:column id="c_org_weeels_dispatcher_domain_Rider_email" property="email"/>
         </table:table>
     </page:list>
 </div>

@@ -17,23 +17,25 @@ public class RideRequest {
 	public enum RequestStatus {
 		OPEN, BOOKED, CANCELED, FINISHED
 	}
+	
+	public enum LuggageSize {
+		low, med, high
+	}
+	
 	@Id
     private String id;
 
     @DBRef
     protected Rider rider;
-
     protected int numPassengers;
-    protected int luggageSize;
-
     protected Location pickUpLocation;
-
-    protected Location dropOffLocation;
-	
+    protected Location dropOffLocation;	
     protected String formattedAddressPickup;
 	protected String inputAddressPickup;
 	protected String formattedAddressDropoff;
 	protected String inputAddressDropoff;
+	protected String neighborhood;
+	protected LuggageSize luggage;
 
 	protected RequestStatus status;
 
@@ -152,16 +154,20 @@ public class RideRequest {
 	public void setStatus(RequestStatus status) {
 		this.status = status;
 	}
-
-	public int getLuggageSize() {
-		return luggageSize;
-	}
-
-	public void setLuggageSize(int luggageSize) {
-		this.luggageSize = luggageSize;
-	}
 	
-	public boolean equals(RideRequest other) {
-		return id.equals(other.id);
+	public String getNeighborhood() {
+		return neighborhood;
+	}
+
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
+	}
+
+	public LuggageSize getLuggage() {
+		return luggage;
+	}
+
+	public void setLuggage(LuggageSize luggage) {
+		this.luggage = luggage;
 	}
 }

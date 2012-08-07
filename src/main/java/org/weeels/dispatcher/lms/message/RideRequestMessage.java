@@ -2,9 +2,11 @@ package org.weeels.dispatcher.lms.message;
 
 import org.weeels.dispatcher.domain.Location;
 import org.weeels.dispatcher.domain.RideRequest;
+import org.weeels.dispatcher.domain.RideRequest.LuggageSize;
 import org.weeels.dispatcher.domain.Rider;
 
 public class RideRequestMessage {
+	
 	
 	public String requestId;
 	public String formattedAddressPickup;
@@ -17,11 +19,35 @@ public class RideRequestMessage {
 	public double lonDropoff;
 	public int partySize;
 	public long requestTime;
-	public int luggageSize;
+	public RideRequest.LuggageSize luggage;
 	public String name;
+	public String email;
+	public String neighborhood;	
 	
+	public RideRequestMessage(String requestId, String formattedAddressPickup,
+			String inputAddressPickup, String formattedAddressDropoff,
+			String inputAddressDropoff, double latPickup, double lonPickup,
+			double latDropoff, double lonDropoff, int partySize,
+			long requestTime, LuggageSize luggage, String name, String email,
+			String neighborhood) {
+		super();
+		this.requestId = requestId;
+		this.formattedAddressPickup = formattedAddressPickup;
+		this.inputAddressPickup = inputAddressPickup;
+		this.formattedAddressDropoff = formattedAddressDropoff;
+		this.inputAddressDropoff = inputAddressDropoff;
+		this.latPickup = latPickup;
+		this.lonPickup = lonPickup;
+		this.latDropoff = latDropoff;
+		this.lonDropoff = lonDropoff;
+		this.partySize = partySize;
+		this.requestTime = requestTime;
+		this.luggage = luggage;
+		this.name = name;
+		this.email = email;
+		this.neighborhood = neighborhood;
+	}
 	
-
 	public RideRequestMessage(RideRequest request) {
 		this.requestId = request.getId();
 		this.formattedAddressPickup = request.getFormattedAddressPickup();
@@ -35,6 +61,9 @@ public class RideRequestMessage {
 		this.partySize = request.getNumPassengers();
 		this.requestTime = request.getRequestTime();
 		this.name = request.getRider().getName();
+		this.email = request.getRider().getEmail();
+		this.luggage = request.getLuggage();
+		this.neighborhood = request.getNeighborhood();
 	}
 	
 	public RideRequestMessage() {
@@ -51,30 +80,10 @@ public class RideRequestMessage {
 		request.setRequestTime(requestTime);
 		request.setDropOffLocation(new Location(lonDropoff, latDropoff));
 		request.setPickUpLocation(new Location(lonPickup, latPickup));
-		request.setLuggageSize(luggageSize);
+		request.setLuggage(luggage);
 		request.setRider(rider);
+		request.setNeighborhood(neighborhood);
 		return request;
-	}
-
-	public RideRequestMessage(String requestId, String formattedAddressPickup,
-			String inputAddressPickup, String formattedAddressDropoff,
-			String inputAddressDropoff, double latPickup, double lonPickup,
-			double latDropoff, double lonDropoff, int partySize,
-			long requestTime, int luggageSize, String name) {
-		super();
-		this.requestId = requestId;
-		this.formattedAddressPickup = formattedAddressPickup;
-		this.inputAddressPickup = inputAddressPickup;
-		this.formattedAddressDropoff = formattedAddressDropoff;
-		this.inputAddressDropoff = inputAddressDropoff;
-		this.latPickup = latPickup;
-		this.lonPickup = lonPickup;
-		this.latDropoff = latDropoff;
-		this.lonDropoff = lonDropoff;
-		this.partySize = partySize;
-		this.requestTime = requestTime;
-		this.luggageSize = luggageSize;
-		this.name = name;
 	}
 
 	public String getRequestId() {
@@ -165,19 +174,35 @@ public class RideRequestMessage {
 		this.requestTime = requestTime;
 	}
 
-	public int getLuggageSize() {
-		return luggageSize;
-	}
-
-	public void setLuggageSize(int luggageSize) {
-		this.luggageSize = luggageSize;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public RideRequest.LuggageSize getLuggage() {
+		return luggage;
+	}
+
+	public void setLuggage(RideRequest.LuggageSize luggage) {
+		this.luggage = luggage;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNeighborhood() {
+		return neighborhood;
+	}
+
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 }

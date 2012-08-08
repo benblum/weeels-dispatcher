@@ -9,9 +9,11 @@
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/login" authentication-failure-url="/login?login_error=t" />
         <logout logout-url="/resources/j_spring_security_logout" />
         <!-- Configure these elements to secure URIs in your application -->
-        <intercept-url pattern="/choices/**" access="hasRole('ROLE_ADMIN')" />
-        <intercept-url pattern="/member/**" access="isAuthenticated()" />
-        <intercept-url pattern="/resources/**" access="permitAll" />
+        <intercept-url pattern="/database**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/rider**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/riderequest**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/rideproposal**" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/ridebooking**" access="hasRole('ROLE_ADMIN')" />
         <intercept-url pattern="/**" access="permitAll" />
     </http>
     <!-- Configure Authentication mechanism -->
@@ -21,7 +23,6 @@
             <password-encoder hash="sha-256" />
             <user-service>
                 <user name="admin" password="ad588b325bada9c31e9578da59b7281e989f28d8e5d0b54466880498a5e0f235" authorities="ROLE_ADMIN" />
-                <user name="weeels" password="ad588b325bada9c31e9578da59b7281e989f28d8e5d0b54466880498a5e0f235" authorities="ROLE_USER" />
             </user-service>
         </authentication-provider>
     </authentication-manager>

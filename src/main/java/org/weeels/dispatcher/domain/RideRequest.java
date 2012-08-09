@@ -27,6 +27,10 @@ public @Data class RideRequest {
     private String id;
     @DBRef
     protected Rider rider;
+    @DBRef
+    protected Hub pickup;
+    @DBRef
+    protected Hub dropoff;
     protected int numPassengers;
     protected Location pickUpLocation;
     protected Location dropOffLocation;	

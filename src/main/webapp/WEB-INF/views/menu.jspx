@@ -7,6 +7,10 @@
             <menu:item id="i_rider_new" messageCode="global_menu_new" url="/riders?form" z="PgJxjQTakx6lZc8QhlEyFLi4Bwk="/>
             <menu:item id="i_rider_list" messageCode="global_menu_list" url="/riders?page=1&amp;size=${empty param.size ? 10 : param.size}" z="7rX3MizfvBhUUYOwjGIcatwtasE="/>
         </menu:category>
+         <menu:category id="c_hub" z="Ib6FlOsW4fUiqgI3a0g1KSM731s=">
+            <menu:item id="i_hub_new" messageCode="global_menu_new" url="/hubs?form" z="PgJxjQTakx6lZc8QhlEyFLi4Bwk="/>
+            <menu:item id="i_hub_list" messageCode="global_menu_list" url="/hubs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="7rX3MizfvBhUUYOwjGIcatwtasE="/>
+        </menu:category>
         <menu:category id="c_riderequest" z="36PgSf2s79c3S1duj6n3z8V7N54=">
             <menu:item id="i_riderequest_new" messageCode="global_menu_new" url="/riderequests?form" z="SVV6xhXgBiM18+0FcYkMpc3PVrs="/>
             <menu:item id="i_riderequest_lms" messageCode="global_menu_new" url="/riderequests?lms"/>

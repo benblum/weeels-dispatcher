@@ -12,7 +12,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public @Data @AllArgsConstructor @NoArgsConstructor class Location {
-	public static final Location LAGUARDIA = new Location(40.770739, -73.865199);
 	private double lon, lat;
 
 	public String toJson() {

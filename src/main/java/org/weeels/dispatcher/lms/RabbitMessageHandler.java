@@ -29,9 +29,16 @@ public class RabbitMessageHandler {
 	@Autowired
 	private RiderRepository riderRepository;
 	@Autowired
+	private HubRepository hubRepository;
+	@Autowired
 	private RideBookingService rideBookingService;
 	@Autowired
 	private RabbitTemplate responseTemplate;
+	
+	public void init() {
+		hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(40.770739, -73.865199)));
+
+	}
 
 	public void handleMessage(RideRequestMessage msg) {
 		try {

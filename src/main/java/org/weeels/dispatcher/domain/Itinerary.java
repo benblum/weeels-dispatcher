@@ -13,14 +13,17 @@ import lombok.NoArgsConstructor;
 public @Data @NoArgsConstructor class Itinerary {
 	
 	private Location destination;
+	private Location origin;
 	private List<Stop> stops = new ArrayList<Stop>();
 	
 	public Itinerary(Itinerary other) {
-		this.stops = new ArrayList<Stop>(other.stops);
+		setStops(other.stops);
 	}
 
 	public void addStop(Stop stop) {
 		stops.add(stop);
+		if(stops.size() == 1)
+			origin = stop.getLocation();
 		destination = stop.getLocation();
 	}
 
@@ -30,6 +33,7 @@ public @Data @NoArgsConstructor class Itinerary {
 	
 	public void setStops(List<Stop> stops) {
         this.stops = stops;
+        origin = stops.get(0).getLocation();
         destination = stops.get(stops.size()-1).getLocation();
     }
 

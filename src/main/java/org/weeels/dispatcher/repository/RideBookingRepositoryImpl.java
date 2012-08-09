@@ -62,6 +62,28 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 	}
 	
 	@Override
+	public List<RideBooking> findAndLock(RideRequest rideRequest, 
+			BookingStatus status, int maxRiders, long timeRadius, 
+			Location origin, Location destination, double radius) {
+		Criteria good = Criteria.where("numPassengers").lte(maxRiders)
+				.and("status").is(status.name())
+				.and("itinerary.origin").nearSphere(new Point(destination.getLon(), destination.getLat())).maxDistance(radius)
+				.and("itinerary.destination").nearSphere(new Point(destination.getLon(), destination.getLat())).maxDistance(radius)
+				.and("requestTime").gte(rideRequest.getRequestTime()-timeRadius).and("requestTime").lte(rideRequest.getRequestTime()+timeRadius)
+				.and("lockedBy").is(null);
+		mongoTemplate.updateMulti(new Query(good), 
+				new Update().set("lockedBy",new ObjectId(rideRequest.getId())), RideBooking.class);
+		good = Criteria.where("numPassengers").lte(maxRiders)
+				.and("status").is(status.name())
+				.and("itinerary.origin").nearSphere(new Point(destination.getLon(), destination.getLat())).maxDistance(radius)
+				.and("itinerary.destination").nearSphere(new Point(destination.getLon(), destination.getLat())).maxDistance(radius)
+				.and("requestTime").gte(rideRequest.getRequestTime()-timeRadius).and("requestTime").lte(rideRequest.getRequestTime()+timeRadius)
+				.and("lockedBy").is(new ObjectId(rideRequest.getId()));
+		List<RideBooking> retVal = mongoTemplate.find(new Query(good), RideBooking.class);
+		return retVal;
+	}
+	
+	@Override
 	public void unlock(RideRequest rideRequest) {
 		mongoTemplate.updateMulti(new Query(Criteria.where("lockedBy").is(new ObjectId(rideRequest.getId()))), 
 				new Update().set("lockedBy",null), RideBooking.class);

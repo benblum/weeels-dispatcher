@@ -10,7 +10,6 @@ import java.util.List;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 public @Data @NoArgsConstructor class Stop {
-	
 	private int index;
 	private Location location;
 	private String address;
@@ -21,9 +20,19 @@ public @Data @NoArgsConstructor class Stop {
     @DBRef
     private List<RideRequest> rideRequestsToDropOff = new ArrayList<RideRequest>();
 
+    @DBRef
+    private Hub hub;
+    
+    public Stop(Hub hub) {
+    	this.location = hub.getLocation();
+    	this.address = hub.getAddress();
+    	this.hub = hub;
+    }
+    
 	public Stop(Location location, String address) {
 		this.location = location;
 		this.address = address;
+		this.hub = null;
 	}
 
 	public String toJson() {

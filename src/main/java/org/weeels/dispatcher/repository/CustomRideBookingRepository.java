@@ -16,7 +16,9 @@ public interface CustomRideBookingRepository {
 	public List<RideBooking> findAndLock(RideRequest rideRequest,
 			BookingStatus status, int maxRiders, Location destination,
 			double radius);
-	
+	public List<RideBooking> findAndLock(RideRequest rideRequest, 
+			BookingStatus status, int maxRiders, long timeRadius, 
+			Location origin, Location destination, double radius);
 	public RideBooking findOneByRideRequestsId(String id);
 	public RideBooking findOneByStatusAndAllRideRequestsId(BookingStatus status,
 			List<ObjectId> rideRequestIds);

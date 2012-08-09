@@ -29,7 +29,7 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 	@Override
 	public RideBooking unlock(RideBooking rideBooking, RideRequest rideRequest) {
 		RideBooking retVal= mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(new ObjectId(rideBooking.getId()))
-				.and("lockedBy").is(rideRequest.getId()))
+				.and("lockedBy").is(new ObjectId(rideRequest.getId())))
 				, new Update().set("lockedBy",null), new FindAndModifyOptions().returnNew(true), RideBooking.class);
 		return retVal;
 	}
@@ -39,7 +39,7 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 	public RideBooking lock(RideBooking rideBooking, RideRequest rideRequest) throws RideBookingLockException {
 		RideBooking retVal= mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(new ObjectId(rideBooking.getId()))
 				.and("lockedBy").is(null))
-				, new Update().set("lockedBy",null), new FindAndModifyOptions().returnNew(true), RideBooking.class);
+				, new Update().set("lockedBy",new ObjectId(rideRequest.getId())), new FindAndModifyOptions().returnNew(true), RideBooking.class);
 		return retVal;
 		
 	}
@@ -52,11 +52,11 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 				.and("itinerary.destination").nearSphere(new Point(destination.getLon(), destination.getLat())).maxDistance(radius)
 				.and("lockedBy").is(null);
 		mongoTemplate.updateMulti(new Query(good), 
-				new Update().set("lockedBy",rideRequest.getId()), RideBooking.class);
+				new Update().set("lockedBy",new ObjectId(rideRequest.getId())), RideBooking.class);
 		good = Criteria.where("numPassengers").lte(maxRiders)
 				.and("status").is(status.name())
 				.and("itinerary.destination").nearSphere(new Point(destination.getLon(), destination.getLat())).maxDistance(radius)
-				.and("lockedBy").is(rideRequest.getId());
+				.and("lockedBy").is(new ObjectId(rideRequest.getId()));
 		List<RideBooking> retVal = mongoTemplate.find(new Query(good), RideBooking.class);
 		return retVal;
 	}

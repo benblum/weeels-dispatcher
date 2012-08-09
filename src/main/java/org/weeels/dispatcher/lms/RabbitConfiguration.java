@@ -21,13 +21,7 @@ import org.springframework.amqp.support.converter.JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.weeels.dispatcher.lms.message.ExpireMatchMessage;
-import org.weeels.dispatcher.lms.message.ExpireRequestMessage;
-import org.weeels.dispatcher.lms.message.MatchMessage;
-import org.weeels.dispatcher.lms.message.MatchRequestMessage;
-import org.weeels.dispatcher.lms.message.RideRequestMessage;
-import org.weeels.dispatcher.lms.message.StateMessage;
-import org.weeels.dispatcher.lms.message.StateRequestMessage;
+import org.weeels.dispatcher.lms.message.*;
 
 @Configuration
 public class RabbitConfiguration {
@@ -191,6 +185,7 @@ public class RabbitConfiguration {
 		idClassMapping.put("state_request", StateRequestMessage.class);
 		idClassMapping.put("state", StateMessage.class);
 		idClassMapping.put("match_request", MatchRequestMessage.class);
+		idClassMapping.put("passenger", RideRequestResponseMessage.class);
 		typeMapper.setIdClassMapping(idClassMapping);
 		return typeMapper;
 	}

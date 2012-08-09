@@ -6,7 +6,8 @@ import org.weeels.dispatcher.domain.RideRequest.LuggageSize;
 import org.weeels.dispatcher.domain.Rider;
 import lombok.*;
 
-public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestMessage {
+public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestResponseMessage {
+	public String requestId;
 	public String formattedAddressPickup;
 	public String inputAddressPickup;
 	public String formattedAddressDropoff;
@@ -22,7 +23,8 @@ public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestMessage {
 	public String email;
 	public String neighborhood;	
 	
-	public RideRequestMessage(RideRequest request) {
+	public RideRequestResponseMessage(RideRequest request) {
+		this.requestId = request.getId();
 		this.formattedAddressPickup = request.getFormattedAddressPickup();
 		this.inputAddressPickup = request.getInputAddressPickup();
 		this.formattedAddressDropoff = request.getFormattedAddressDropoff();
@@ -41,6 +43,7 @@ public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestMessage {
 	
 	public RideRequest toRideRequest(Rider rider) {
 		RideRequest request = new RideRequest();
+		request.setId(requestId);
 		request.setFormattedAddressDropoff(formattedAddressDropoff);
 		request.setFormattedAddressPickup(formattedAddressPickup);
 		request.setInputAddressDropoff(inputAddressDropoff);

@@ -150,7 +150,7 @@ public class LMSRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 				rideBooking.setItinerary(rideProposal.getItinerary());
 				rideBooking.setStatus(BookingStatus.CLOSED);
 				rideBookingRepository.save(rideBooking);
-				logger.info("Made shared ride for " + rideBooking.getRideRequests().get(0).getId() + " and " + rideBooking.getRideRequests().get(1).getId());
+				logger.info("Made shared ride for " + rideBooking.getRideRequests().get(0).getRider().getName() + " and " + rideBooking.getRideRequests().get(1).getRider().getName());
 				rideProposalRepository.deleteByRideBookingId(rideBooking.getId());
 				// Some notification to other RideProposals that they've been deleted would
 				// probably be nice in the future...
@@ -236,7 +236,7 @@ public class LMSRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 			logger.error(e.getMessage());
 			return false;
 		} finally {
-			if(rideBooking.getLockedBy() != null)
+			if(rideBooking.getLockedBy().equals(rideRequest.getId()))
 				rideBookingRepository.unlock(rideBooking, rideRequest);
 		}
 	}

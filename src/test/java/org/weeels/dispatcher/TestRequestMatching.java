@@ -65,7 +65,6 @@ public class TestRequestMatching {
 		return ret;
 	}
 	
-	
 	public void test() {
 		amqpAdmin.purgeQueue(RabbitConfiguration.requestQueueName, true);
 		amqpAdmin.purgeQueue(RabbitConfiguration.responseQueueName, true);
@@ -73,13 +72,13 @@ public class TestRequestMatching {
 		riderRepository.deleteAll();
 		rideBookingRepository.deleteAll();
 		rideProposalRepository.deleteAll();
-		RideRequestMessage msgA = new RideRequestMessage("AA", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
+		RideRequestMessage msgA = new RideRequestMessage("LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
+				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "AA", "bob@gmail.com", "New York");
 		requestTemplate.convertAndSend(msgA);
-		RideRequestMessage msgB = new RideRequestMessage("BB", "LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
-				"Columbia University", 40.712346,-73.962665,40.80801,-73.963169, 1, 12334562, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage msgC = new RideRequestMessage("CC", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
+		RideRequestMessage msgB = new RideRequestMessage("LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
+				"Columbia University", 40.712346,-73.962665,40.80801,-73.963169, 1, 12334562, LuggageSize.low, "BB", "bob@gmail.com", "New York");
+		RideRequestMessage msgC = new RideRequestMessage("LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
+				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "CC", "bob@gmail.com", "New York");
 		requestTemplate.convertAndSend(msgB);
 		requestTemplate.convertAndSend(msgC);
 		//MatchMessage match = (MatchMessage)poll(responseTemplate);		
@@ -87,6 +86,7 @@ public class TestRequestMatching {
 		
 	}
 	
+	@Test
 	public void testAll() {
 		amqpAdmin.purgeQueue(RabbitConfiguration.requestQueueName, true);
 		amqpAdmin.purgeQueue(RabbitConfiguration.responseQueueName, true);
@@ -97,32 +97,49 @@ public class TestRequestMatching {
 		mongoTemplate.indexOps(RideBooking.class).ensureIndex(new GeospatialIndex("itinerary.destination"));
 		mongoTemplate.indexOps(RideProposal.class).ensureIndex(new GeospatialIndex("itinerary.destination"));
 		
-		RideRequestMessage msgA = new RideRequestMessage("AA", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage msgB = new RideRequestMessage("BB", "LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
-				"Columbia University", 40.712346,-73.962665,40.80801,-73.963169, 1, 12334562, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage msgC = new RideRequestMessage("CC", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage msgD = new RideRequestMessage("DD", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage msgE = new RideRequestMessage("EE", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
+		RideRequestMessage msgA = new RideRequestMessage("LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
+				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "AA", "bob@gmail.com", "New York");
+		RideRequestMessage msgB = new RideRequestMessage("LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
+				"Columbia University", 40.712346,-73.962665,40.80801,-73.963169, 1, 12334562, LuggageSize.low, "BB", "bob@gmail.com", "New York");
+		RideRequestMessage msgC = new RideRequestMessage("LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
+				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "CC", "bob@gmail.com", "New York");
+		RideRequestMessage msgD = new RideRequestMessage("LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
+				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "DD", "bob@gmail.com", "New York");
+		RideRequestMessage msgE = new RideRequestMessage("LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
+				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "EE", "bob@gmail.com", "New York");
 		
 		requestTemplate.convertAndSend(msgA);
 		requestTemplate.convertAndSend(msgB);
 		requestTemplate.convertAndSend(msgC);
 		requestTemplate.convertAndSend(msgD);
 		requestTemplate.convertAndSend(msgE);
+		RideBooking booking;
 		
+		RideRequestResponseMessage response = (RideRequestResponseMessage)poll(responseTemplate);
+		assert(response.getName().equals("AA"));
+		response = (RideRequestResponseMessage)poll(responseTemplate);
+		assert(response.getName().equals("BB"));
+		response = (RideRequestResponseMessage)poll(responseTemplate);
+		assert(response.getName().equals("CC"));
 		MatchMessage match = (MatchMessage)poll(responseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("AA",match.requestIds[0]);
-		Assert.assertEquals("CC",match.requestIds[1]);
+		booking = rideBookingRepository.findOne(match.getMatchId());
+		System.out.println("Received match: "+booking.getRideRequests().get(0).getRider().getName() + 
+				" and "+booking.getRideRequests().get(1).getRider().getName());	
+		Assert.assertEquals("AA",booking.getRideRequests().get(0).getRider().getName());
+		Assert.assertEquals("CC",booking.getRideRequests().get(1).getRider().getName());
+		
+		response = (RideRequestResponseMessage)poll(responseTemplate);
+		assert(response.getName().equals("DD"));
+		response = (RideRequestResponseMessage)poll(responseTemplate);
+		assert(response.getName().equals("EE"));
 		match = (MatchMessage) poll(responseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("DD",match.requestIds[0]);
-		Assert.assertEquals("EE",match.requestIds[1]);
-	
+		booking = rideBookingRepository.findOne(match.getMatchId());
+		System.out.println("Received match: "+booking.getRideRequests().get(0).getRider().getName() + 
+				" and "+booking.getRideRequests().get(1).getRider().getName());	
+		Assert.assertEquals("DD",booking.getRideRequests().get(0).getRider().getName());
+		Assert.assertEquals("EE",booking.getRideRequests().get(1).getRider().getName());
+		
+	/*
 		RideRequestMessage requestA = new RideRequestMessage("A", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
 				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
 		RideRequestMessage requestB = new RideRequestMessage("B", "LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
@@ -204,6 +221,7 @@ public class TestRequestMatching {
 		
 		Assert.assertEquals("EEE",match.requestIds[0]);
 		Assert.assertEquals("E",match.requestIds[1]);	
+		*/
 	}
 
 	public void testStateMessage() {

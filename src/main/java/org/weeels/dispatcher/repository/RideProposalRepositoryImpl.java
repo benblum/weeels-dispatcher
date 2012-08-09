@@ -15,7 +15,7 @@ public class RideProposalRepositoryImpl implements CustomRideProposalRepository 
 
 	@Override
 	public void deleteByRideRequestId(String id) {
-		mongoTemplate.remove(new Query(Criteria.where("rideRequest.$id").is(id)),RideProposal.class);
+		mongoTemplate.remove(new Query(Criteria.where("rideRequest.$id").is(new ObjectId(id))),RideProposal.class);
 	}
 	
 	@Override

@@ -66,7 +66,7 @@ public class RideRequestController {
         }
         uiModel.asMap().clear();
         requestTemplate.convertAndSend(rideRequestMessage);
-        return "redirect:/riderequests/" + encodeUrlPathSegment(rideRequestMessage.requestId, httpServletRequest);
+        return "redirect:/riderequests";
     }
 
 	@RequestMapping(params = "form", produces = "text/html")

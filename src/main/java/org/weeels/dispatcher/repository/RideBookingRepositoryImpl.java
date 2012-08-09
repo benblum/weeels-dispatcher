@@ -63,23 +63,23 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 	
 	@Override
 	public void unlock(RideRequest rideRequest) {
-		mongoTemplate.updateMulti(new Query(Criteria.where("lockedBy").is(rideRequest.getId())), 
+		mongoTemplate.updateMulti(new Query(Criteria.where("lockedBy").is(new ObjectId(rideRequest.getId()))), 
 				new Update().set("lockedBy",null), RideBooking.class);
 	}
 
 	@Override
 	public RideBooking findOneByRideRequestsId(String id) {
-		return mongoTemplate.findOne(new Query(Criteria.where("rideRequests.$id").is(id)), RideBooking.class);
+		return mongoTemplate.findOne(new Query(Criteria.where("rideRequests.$id").is(new ObjectId(id))), RideBooking.class);
 	}
 	
 	@Override
-	public RideBooking findOneByStatusAndAllRideRequestsId(BookingStatus status, List<String> rideRequestIds) {
+	public RideBooking findOneByStatusAndAllRideRequestsId(BookingStatus status, List<ObjectId> rideRequestIds) {
 		return mongoTemplate.findOne(new Query(Criteria.where("status").is(status)
 				.and("rideRequests.$id").all(rideRequestIds)), RideBooking.class);
 	}
 
 	@Override
-	public List<RideBooking> findByStatusAndAnyRideRequestsId(BookingStatus status, List<String> rideRequestIds) {
+	public List<RideBooking> findByStatusAndAnyRideRequestsId(BookingStatus status, List<ObjectId> rideRequestIds) {
 		return mongoTemplate.find(new Query(Criteria.where("status").is(status)
 				.and("rideRequests.$id").in(rideRequestIds)), RideBooking.class);
 	}
@@ -88,7 +88,7 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 	public RideBooking findOneByAnyStatusAndRideRequestsId(
 			List<BookingStatus> status, String id) {
 		return mongoTemplate.findOne(new Query(Criteria.where("status").in(status)
-				.and("rideRequests.$id").is(id)), RideBooking.class);
+				.and("rideRequests.$id").is(new ObjectId(id))), RideBooking.class);
 	}
 	
 	@Override

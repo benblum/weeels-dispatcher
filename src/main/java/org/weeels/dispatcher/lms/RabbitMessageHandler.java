@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.weeels.dispatcher.lms.message.ExpireMatchMessage;
@@ -170,9 +171,9 @@ public class RabbitMessageHandler {
 			}				
 			logger.info("Match requested between " + msg.requestIds[0] + " and " + msg.requestIds[1]);
 			
-			List<String> requestIds = new LinkedList<String>();
-			requestIds.add(msg.requestIds[0]);
-			requestIds.add(msg.requestIds[1]);
+			List<ObjectId> requestIds = new LinkedList<ObjectId>();
+			requestIds.add(new ObjectId(msg.requestIds[0]));
+			requestIds.add(new ObjectId(msg.requestIds[1]));
 			List<RideBooking> rideBookings = rideBookingRepository.findByStatusAndAnyRideRequestsId(RideBooking.BookingStatus.OPEN, requestIds);
 			
 			if(rideBookings.size() != 2) {

@@ -2,6 +2,7 @@ package org.weeels.dispatcher.repository;
 
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.geo.Point;
 import org.weeels.dispatcher.domain.Location;
 import org.weeels.dispatcher.domain.RideBooking;
@@ -18,9 +19,9 @@ public interface CustomRideBookingRepository {
 	
 	public RideBooking findOneByRideRequestsId(String id);
 	public RideBooking findOneByStatusAndAllRideRequestsId(BookingStatus status,
-			List<String> rideRequestIds);
+			List<ObjectId> rideRequestIds);
 	public List<RideBooking> findByStatusAndAnyRideRequestsId(BookingStatus status,
-			List<String> rideRequestIds);
+			List<ObjectId> rideRequestIds);
 	public RideBooking findOneByAnyStatusAndRideRequestsId(List<BookingStatus> status,
 			String id);
 	List<RideBooking> findByAnyStatus(List<BookingStatus> viableRideBooking);

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.geo.Point;
 import org.springframework.stereotype.Service;
@@ -62,9 +63,9 @@ public class LMSRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 			List<RideProposal> rideProposals = new ArrayList<RideProposal>();
 			rideProposals.add(openSoloProposal(rideRequest));
 			for(RideBooking rideBookingToUpdate : potentialRideBookings) {
-				List<String> reqIds = new LinkedList<String>();
-				reqIds.add(rideBookingToUpdate.getRideRequests().get(0).getId());
-				reqIds.add(rideRequest.getId());				
+				List<ObjectId> reqIds = new LinkedList<ObjectId>();
+				reqIds.add(new ObjectId(rideBookingToUpdate.getRideRequests().get(0).getId()));
+				reqIds.add(new ObjectId(rideRequest.getId()));				
 				if(rideBookingRepository.findOneByStatusAndAllRideRequestsId(BookingStatus.CANCELED, reqIds) == null)
 					rideProposals.add(makeSharedProposal(rideBookingToUpdate, rideRequest));
 			}

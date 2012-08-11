@@ -8,6 +8,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class RideRequestController {
     RiderRepository riderRepository;
 	
 	@Autowired
-	RabbitTemplate requestTemplate;
+	RabbitTemplate lmsRequestTemplate;
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String create(@Valid RideRequest rideRequest, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -65,7 +66,7 @@ public class RideRequestController {
             return "riderequests/lms";
         }
         uiModel.asMap().clear();
-        requestTemplate.convertAndSend(rideRequestMessage);
+        lmsRequestTemplate.convertAndSend(rideRequestMessage);
         return "redirect:/riderequests";
     }
 
@@ -94,7 +95,7 @@ public class RideRequestController {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("riderequests", rideRequestRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / sizeNo, sizeNo)).getContent());
+            uiModel.addAttribute("riderequests", rideRequestRepository.findAll(new org.springframework.data.domain.PageRequest(firstResult / sizeNo, sizeNo, new Sort(Sort.Direction.ASC, "requestTime"))).getContent());
             float nrOfPages = (float) rideRequestRepository.count() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {

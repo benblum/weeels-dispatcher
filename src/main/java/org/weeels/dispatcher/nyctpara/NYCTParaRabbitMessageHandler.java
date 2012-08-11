@@ -1,17 +1,18 @@
-package org.weeels.dispatcher.simulator;
+package org.weeels.dispatcher.nyctpara;
 
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.weeels.dispatcher.domain.*;
 import org.weeels.dispatcher.domain.RideRequest.RequestStatus;
+import org.weeels.dispatcher.nyctpara.message.NYCTParatransitRideRequestMessage;
 import org.weeels.dispatcher.repository.*;
 import org.weeels.dispatcher.service.RideBookingService;
-import org.weeels.dispatcher.simulator.message.NYCTParatransitRideRequestMessage;
 
-public class RabbitMessageHandler {
-	private static final Logger logger = Logger.getLogger(RabbitMessageHandler.class);
+public class NYCTParaRabbitMessageHandler {
+	private static final Logger logger = Logger.getLogger(NYCTParaRabbitMessageHandler.class);
 	@Autowired
 	private RideRequestRepository rideRequestRepository;
 	@Autowired
@@ -19,9 +20,10 @@ public class RabbitMessageHandler {
 	@Autowired
 	private RiderRepository riderRepository;
 	@Autowired
+	@Qualifier("NYCTPara")
 	private RideBookingService rideBookingService;
 	@Autowired
-	private RabbitTemplate responseTemplate;
+	private RabbitTemplate paraResponseTemplate;
 
 	public void handleMessage(NYCTParatransitRideRequestMessage msg) {
 		try {

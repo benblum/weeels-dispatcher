@@ -13,6 +13,5 @@ public interface RideBookingRepository extends CustomRideBookingRepository, Pagi
     List<RideBooking> findAll();
 
 	List<RideBooking> findAllByStatus(BookingStatus status);
-    
-//    RideBooking findByRideRequestsId(String id);
+
 }

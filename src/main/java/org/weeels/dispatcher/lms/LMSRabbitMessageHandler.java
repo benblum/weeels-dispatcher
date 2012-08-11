@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.weeels.dispatcher.lms.message.ExpireMatchMessage;
 import org.weeels.dispatcher.lms.message.ExpireRequestMessage;
 import org.weeels.dispatcher.lms.message.MatchMessage;
@@ -20,8 +23,8 @@ import org.weeels.dispatcher.domain.*;
 import org.weeels.dispatcher.repository.*;
 import org.weeels.dispatcher.service.RideBookingService;
 
-public class RabbitMessageHandler {
-	private static final Logger logger = Logger.getLogger(RabbitMessageHandler.class);
+public class LMSRabbitMessageHandler {
+	private static final Logger logger = Logger.getLogger(LMSRabbitMessageHandler.class);
 	@Autowired
 	private RideRequestRepository rideRequestRepository;
 	@Autowired
@@ -31,13 +34,18 @@ public class RabbitMessageHandler {
 	@Autowired
 	private HubRepository hubRepository;
 	@Autowired
+	@Qualifier("LMS")
 	private RideBookingService rideBookingService;
 	@Autowired
-	private RabbitTemplate responseTemplate;
+	private RabbitTemplate lmsResponseTemplate;
 	
+	private Hub laGuardia;
+	
+	@PostConstruct
 	public void init() {
-		hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(40.770739, -73.865199)));
-
+		laGuardia = hubRepository.findOneByName("LaGuardia");
+		if(laGuardia == null)
+			laGuardia = hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(-73.865199, 40.770739)));
 	}
 
 	public void handleMessage(RideRequestMessage msg) {
@@ -48,12 +56,12 @@ public class RabbitMessageHandler {
 			rider.setName(msg.name);
 			rider.setEmail(msg.getEmail());
 			riderRepository.save(rider);
-			RideRequest rideRequest = msg.toRideRequest(rider);
+			RideRequest rideRequest = msg.toRideRequest(rider, laGuardia);
 			rideRequest = rideRequestRepository.save(rideRequest);
-			responseTemplate.convertAndSend(new RideRequestResponseMessage(rideRequest));
+			lmsResponseTemplate.convertAndSend(new RideRequestResponseMessage(rideRequest));
 			RideBooking rideBooking = openAndBookProposal(rideRequest);
 			if(rideBooking.getRideRequests().size() > 1)
-				responseTemplate.convertAndSend(new MatchMessage(rideBooking));
+				lmsResponseTemplate.convertAndSend(new MatchMessage(rideBooking));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -86,7 +94,7 @@ public class RabbitMessageHandler {
 				for(RideRequest request : rideBooking.getRideRequests()) {
 					RideBooking newBooking = openAndBookProposal(request);
 					if(newBooking.getRideRequests().size() > 1)
-						responseTemplate.convertAndSend(new MatchMessage(newBooking));
+						lmsResponseTemplate.convertAndSend(new MatchMessage(newBooking));
 				}
 			} else {
 				logger.info("Match departing" + rideBooking.getId());
@@ -130,7 +138,7 @@ public class RabbitMessageHandler {
 					RideRequest otherRequest = rideBooking.getRideRequests().get(0);
 					RideBooking newBooking = openAndBookProposal(otherRequest);
 					if(newBooking.getRideRequests().size() > 1)
-						responseTemplate.convertAndSend(new MatchMessage(newBooking));
+						lmsResponseTemplate.convertAndSend(new MatchMessage(newBooking));
 				} else {
 					// Not used (yet), since we only ever match two people
 					rideBookingService.cancelRideRequestFromBooking(rideBooking, rideRequest);
@@ -164,7 +172,7 @@ public class RabbitMessageHandler {
 			response.matches = new MatchMessage[matches.size()];
 			requests.toArray(response.requests);
 			matches.toArray(response.matches);
-			responseTemplate.convertAndSend(response);
+			lmsResponseTemplate.convertAndSend(response);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -194,7 +202,7 @@ public class RabbitMessageHandler {
 			}
 			rideBookingService.cancelRideBooking(rideBookings.get(1));
 			RideBooking rideBooking = rideBookingService.bookRide(proposal);
-			responseTemplate.convertAndSend(new MatchMessage(rideBooking));
+			lmsResponseTemplate.convertAndSend(new MatchMessage(rideBooking));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

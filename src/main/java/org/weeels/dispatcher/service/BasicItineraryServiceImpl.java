@@ -1,7 +1,6 @@
-package org.weeels.dispatcher.lms;
+package org.weeels.dispatcher.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.weeels.dispatcher.domain.Itinerary;
 import org.weeels.dispatcher.domain.RideRequest;
@@ -9,7 +8,7 @@ import org.weeels.dispatcher.domain.Stop;
 import org.weeels.dispatcher.service.ItineraryService;
 
 @Service
-public class LMSItineraryServiceImpl implements ItineraryService {
+public class BasicItineraryServiceImpl implements ItineraryService {
 
 	@Override
 	public Itinerary soloItinerary(RideRequest rideRequest) {

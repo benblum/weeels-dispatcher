@@ -4,6 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_org_weeels_dispatcher_domain_Hub" object="${hub}" path="/hubs" z="sn6H0NTgyTNjM9+Hkr58e1JnOYc=">
         <field:display field="name" id="s_org_weeels_dispatcher_domain_Hub_name" object="${hub}" z="rTcLnns55PdcyuncL74v4JGzfdI="/>
-        <field:display field="location" id="s_org_weeels_dispatcher_domain_Hub_name" object="${hub}" z="rTcLnns55PdcyuncL74v4JGzfdI="/>
+        <field:display field="location" id="s_org_weeels_dispatcher_domain_Hub_location" object="${hub}" z="rTcLnns55PdcyuncL74v4JGzfdI="/>
     </page:show>
 </div>

@@ -12,11 +12,25 @@ import org.weeels.dispatcher.domain.RideRequest;
 public interface CustomRideBookingRepository {
 	public RideBooking unlock(RideBooking rideBooking, RideRequest rideRequest);
 	public void unlock(RideRequest rideRequest);
-	public RideBooking lock(RideBooking rideBooking, RideRequest rideRequest) throws RideBookingLockException;
+	public RideBooking lock(RideBooking rideBooking, RideRequest rideRequest);
+	public List<RideBooking> lock(List<RideBooking> rideBookings,
+			RideRequest rideRequest);
+/*	
+  	public List<RideBooking> findAndLock(RideRequest rideRequest, BookingStatus status,
+			int maxRiders);
 	public List<RideBooking> findAndLock(RideRequest rideRequest,
 			BookingStatus status, int maxRiders, Location destination,
 			double radius);
 	public List<RideBooking> findAndLock(RideRequest rideRequest, 
+			BookingStatus status, int maxRiders, long timeRadius, 
+			Location origin, Location destination, double radius);
+*/
+	public List<RideBooking> find(RideRequest rideRequest, BookingStatus status,
+			int maxRiders);
+	public List<RideBooking> find(RideRequest rideRequest,
+			BookingStatus status, int maxRiders, Location destination,
+			double radius);
+	public List<RideBooking> find(RideRequest rideRequest, 
 			BookingStatus status, int maxRiders, long timeRadius, 
 			Location origin, Location destination, double radius);
 	public RideBooking findOneByRideRequestsId(String id);
@@ -26,6 +40,7 @@ public interface CustomRideBookingRepository {
 			List<ObjectId> rideRequestIds);
 	public RideBooking findOneByAnyStatusAndRideRequestsId(List<BookingStatus> status,
 			String id);
-	List<RideBooking> findByAnyStatus(List<BookingStatus> viableRideBooking);
-	
+	public List<RideBooking> findByAnyStatus(List<BookingStatus> viableRideBooking);
+	public RideBooking findAndClose(RideBooking rideBooking);
+	 
 }

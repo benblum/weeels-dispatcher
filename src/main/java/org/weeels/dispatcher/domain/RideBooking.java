@@ -23,23 +23,24 @@ public @Data @NoArgsConstructor class RideBooking {
  
     private BookingStatus status;
     
-    private String lockedBy;
-
 	@Id
     private String id;
 	
 	private int numPassengers;
+	private long pickupTime;
 
 	public RideBooking(RideProposal rideProposal) {
 		this.rideRequests = new ArrayList<RideRequest>();
 		rideRequests.add(rideProposal.getRideRequest());
 		this.itinerary = rideProposal.getItinerary();
 		numPassengers = rideProposal.getRideRequest().getNumPassengers();
+		pickupTime = rideProposal.getRideRequest().getRequestTime();
 	}
 	
 	public void addRideRequest(RideRequest rideRequest) {
 		rideRequests.add(rideRequest);
 		numPassengers += rideRequest.getNumPassengers();
+		pickupTime = Math.min(pickupTime,  rideRequest.getRequestTime());
 	}
 	
 	public String toJson() {
@@ -57,4 +58,12 @@ public @Data @NoArgsConstructor class RideBooking {
 	public static Collection<RideBooking> fromJsonArrayToRideBookings(String json) {
         return new JSONDeserializer<List<RideBooking>>().use(null, ArrayList.class).use("values", RideBooking.class).deserialize(json);
     }
+	
+	public int hashCode() {
+		return id.hashCode();
+	}
+	
+	public boolean equals(Object o) {
+		return id.equals(((RideBooking)o).getId());
+	}
 }

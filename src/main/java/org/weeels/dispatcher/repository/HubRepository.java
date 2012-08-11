@@ -9,4 +9,5 @@ import org.weeels.dispatcher.domain.Hub;
 public interface HubRepository extends PagingAndSortingRepository<Hub, String> {
 
     List<Hub> findAll();
+    Hub findOneByName(String name);
 }

@@ -1,4 +1,4 @@
-package org.weeels.dispatcher;
+package org.weeels.dispatcher.config;
 
 import static java.lang.System.getenv;
 
@@ -38,6 +38,13 @@ public class DatabaseConfiguration {
     		mongoTemplate.createCollection(RideProposal.class);
 		mongoTemplate.indexOps(RideProposal.class).ensureIndex(new GeospatialIndex("itinerary.origin"));
 		mongoTemplate.indexOps(RideProposal.class).ensureIndex(new GeospatialIndex("itinerary.destination"));
+	}
+	
+	public static void dropDatabase(MongoOperations mongoTemplate) {
+		mongoTemplate.dropCollection(Rider.class);
+		mongoTemplate.dropCollection(RideRequest.class);
+		mongoTemplate.dropCollection(RideBooking.class);
+		mongoTemplate.dropCollection(RideProposal.class);
 	}
 	
 	@Bean

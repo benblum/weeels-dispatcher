@@ -11,6 +11,8 @@ import lombok.*;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 public @Data @AllArgsConstructor @NoArgsConstructor class Location {
 	private double lon, lat;
 
@@ -33,4 +35,15 @@ public @Data @AllArgsConstructor @NoArgsConstructor class Location {
 	public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
+	
+	public static double geoDistance(Location loc1, Location loc2) {
+		double x = (loc1.getLon() - loc2.getLon()) * 52.34;
+		double y = (loc1.getLat() - loc2.getLat()) * 69.12;
+		//System.out.println(Math.sqrt(x*x+y*y));
+		return Math.sqrt(x * x + y * y);
+	}
+	
+	public Coordinate toCoordinate() {
+		return new Coordinate(lon, lat);
+	}
 }

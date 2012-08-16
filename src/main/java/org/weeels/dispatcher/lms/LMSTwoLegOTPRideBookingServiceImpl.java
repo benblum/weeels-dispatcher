@@ -17,19 +17,17 @@ import org.weeels.dispatcher.service.BasicRideBookingServiceImpl;
 
 @Service
 @Qualifier("LMS")
-public class LMSRideBookingServiceImpl extends BasicRideBookingServiceImpl {
+public class LMSTwoLegOTPRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 	@Autowired
 	protected RideBookingRepository rideBookingRepository;
 	
 	private static int MAX_RIDERS_PER_CAB = 3;
-	private static double MAX_DROPOFF_SEPARATION = 1.0;
-	private static double RADIUS_OF_EARTH = 3959;
 	
 	@Override
 	protected List<RideBooking> findPotentials(RideRequest rideRequest) {	
 		int maxRiders = MAX_RIDERS_PER_CAB - rideRequest.getNumPassengers();
 		List<RideBooking> totalBookings = rideBookingRepository.find(
-				rideRequest, RideBooking.BookingStatus.OPEN, maxRiders, rideRequest.getDropoffLocation(), MAX_DROPOFF_SEPARATION / RADIUS_OF_EARTH);
+				rideRequest, RideBooking.BookingStatus.OPEN, maxRiders);
 		ListIterator<RideBooking> it = totalBookings.listIterator();
 		while(it.hasNext()) {
 			List<ObjectId> reqIds = new LinkedList<ObjectId>();

@@ -16,9 +16,9 @@ public class NYCTParaRideBookingServiceImpl extends BasicRideBookingServiceImpl 
 	protected RideBookingRepository rideBookingRepository;
 	
 	private static int MAX_RIDERS_PER_CAB = 3;
-	private static double MAX_DROPOFF_SEPARATION = 1.5;
+	private static double MAX_DROPOFF_SEPARATION = 1;
 	private static double RADIUS_OF_EARTH = 3959;
-	private static long TIME_DIFF = 15 * 60 * 1000;
+	private static long TIME_DIFF = 10 * 60 * 1000;
 	
 	@Override
 	protected List<RideBooking> findPotentials(RideRequest rideRequest) {
@@ -26,7 +26,7 @@ public class NYCTParaRideBookingServiceImpl extends BasicRideBookingServiceImpl 
 		
 		List<RideBooking> totalBookings = rideBookingRepository.find(
 				rideRequest, RideBooking.BookingStatus.OPEN, maxRiders, TIME_DIFF,
-				rideRequest.getPickUpLocation(), rideRequest.getDropOffLocation(), MAX_DROPOFF_SEPARATION / RADIUS_OF_EARTH);
+				rideRequest.getPickupLocation(), rideRequest.getDropoffLocation(), MAX_DROPOFF_SEPARATION / RADIUS_OF_EARTH);
 		
 		return totalBookings;
 	}

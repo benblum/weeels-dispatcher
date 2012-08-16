@@ -14,7 +14,7 @@ import flexjson.JSONSerializer;
 @Document
 public @Data @NoArgsConstructor class Hub {
 	@Id
-	private String Id;
+	private String id;
 	private String name;
 	private String address;
 	private Location location;
@@ -40,4 +40,8 @@ public @Data @NoArgsConstructor class Hub {
 	public static Collection<Hub> fromJsonArrayToHubs(String json) {
         return new JSONDeserializer<List<Hub>>().use(null, ArrayList.class).use("values", Hub.class).deserialize(json);
     }
+	
+	public boolean equals(Object o) {
+		return this.id.equals(((Hub)o).getId());
+	}
 }

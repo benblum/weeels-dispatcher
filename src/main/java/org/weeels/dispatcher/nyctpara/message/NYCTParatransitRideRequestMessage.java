@@ -38,13 +38,22 @@ public @Data @NoArgsConstructor @AllArgsConstructor class NYCTParatransitRideReq
 		request.setFormattedAddressDropoff(request.getInputAddressDropoff());
 		request.setFormattedAddressPickup(request.getInputAddressPickup());
 		request.setNumPassengers(1);
+		long t=0;
 		try {
-			request.setRequestTime(formatter.parse(TripDate + " " + RequestTime).getTime());
+			t = formatter.parse(TripDate + " " + RequestTime).getTime();
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		request.setDropOffLocation(new Location(DestinationGridX/GPS_SCALE, DestinationGridY/GPS_SCALE));
-		request.setPickUpLocation(new Location(OriginGridX/GPS_SCALE, OriginGridY/GPS_SCALE));
+		request.setRequestTime(t);
+		if(Anchor.equals("P")) {
+			request.setPickupByTime(t);
+			request.setArriveByTime(0);
+		} else {
+			request.setPickupByTime(0);
+			request.setArriveByTime(t);
+		}
+		request.setDropoffLocation(new Location(DestinationGridX/GPS_SCALE, DestinationGridY/GPS_SCALE));
+		request.setPickupLocation(new Location(OriginGridX/GPS_SCALE, OriginGridY/GPS_SCALE));
 		request.setLuggage(RideRequest.LuggageSize.low);
 		request.setRider(rider);
 		return request;

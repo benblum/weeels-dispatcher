@@ -29,10 +29,10 @@ public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestResponseMes
 		this.inputAddressPickup = request.getInputAddressPickup();
 		this.formattedAddressDropoff = request.getFormattedAddressDropoff();
 		this.inputAddressDropoff = request.getInputAddressDropoff();
-		this.latDropoff = request.getDropOffLocation().getLat();
-		this.lonDropoff = request.getDropOffLocation().getLon();
-		this.latPickup = request.getPickUpLocation().getLat();
-		this.lonPickup = request.getPickUpLocation().getLon();
+		this.latDropoff = request.getDropoffLocation().getLat();
+		this.lonDropoff = request.getDropoffLocation().getLon();
+		this.latPickup = request.getPickupLocation().getLat();
+		this.lonPickup = request.getPickupLocation().getLon();
 		this.partySize = request.getNumPassengers();
 		this.requestTime = request.getRequestTime();
 		this.name = request.getRider().getName();
@@ -50,8 +50,8 @@ public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestResponseMes
 		request.setInputAddressPickup(inputAddressPickup);
 		request.setNumPassengers(partySize);
 		request.setRequestTime(requestTime);
-		request.setDropOffLocation(new Location(lonDropoff, latDropoff));
-		request.setPickUpLocation(new Location(lonPickup, latPickup));
+		request.setDropoffLocation(new Location(lonDropoff, latDropoff));
+		request.setPickupLocation(new Location(lonPickup, latPickup));
 		request.setLuggage(luggage);
 		request.setRider(rider);
 		request.setNeighborhood(neighborhood);

@@ -28,12 +28,12 @@ public @Data class RideRequest {
     @DBRef
     protected Rider rider;
     @DBRef
-    protected Hub pickup;
+    protected Hub pickupHub;
     @DBRef
-    protected Hub dropoff;
+    protected Hub dropoffHub;
     protected int numPassengers;
-    protected Location pickUpLocation;
-    protected Location dropOffLocation;	
+    protected Location pickupLocation;
+    protected Location dropoffLocation;	
     protected String formattedAddressPickup;
 	protected String inputAddressPickup;
 	protected String formattedAddressDropoff;
@@ -44,6 +44,9 @@ public @Data class RideRequest {
 //    @Temporal(TemporalType.TIMESTAMP)
 //    @DateTimeFormat(style = "M-")
     protected long requestTime;
+    protected long pickupByTime;
+    protected long arriveByTime;
+    protected long soloDuration;
 
     public String toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);
@@ -60,4 +63,8 @@ public @Data class RideRequest {
 	public static Collection<RideRequest> fromJsonArrayToRideRequests(String json) {
         return new JSONDeserializer<List<RideRequest>>().use(null, ArrayList.class).use("values", RideRequest.class).deserialize(json);
     }
+	
+	public boolean equals(Object o) {
+		return id.equals(((RideRequest)o).getId());
+	}
 }

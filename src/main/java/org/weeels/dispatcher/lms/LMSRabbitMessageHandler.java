@@ -38,16 +38,9 @@ public class LMSRabbitMessageHandler {
 	private RideBookingService rideBookingService;
 	@Autowired
 	private RabbitTemplate lmsResponseTemplate;
-	
+	@Autowired
 	private Hub laGuardia;
 	
-	@PostConstruct
-	public void init() {
-		laGuardia = hubRepository.findOneByName("LaGuardia");
-		if(laGuardia == null)
-			laGuardia = hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(-73.865199, 40.770739)));
-	}
-
 	public void handleMessage(RideRequestMessage msg) {
 		try {
 			logger.info("Received request: " + msg.formattedAddressDropoff);

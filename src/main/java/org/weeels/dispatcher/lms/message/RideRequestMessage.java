@@ -28,8 +28,8 @@ public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestMessage {
 //		this.inputAddressPickup = request.getInputAddressPickup();
 		this.formattedAddressDropoff = request.getFormattedAddressDropoff();
 		this.inputAddressDropoff = request.getInputAddressDropoff();
-		this.latDropoff = request.getDropOffLocation().getLat();
-		this.lonDropoff = request.getDropOffLocation().getLon();
+		this.latDropoff = request.getDropoffLocation().getLat();
+		this.lonDropoff = request.getDropoffLocation().getLon();
 //		this.latPickup = request.getPickUpLocation().getLat();
 //		this.lonPickup = request.getPickUpLocation().getLon();
 		this.partySize = request.getNumPassengers();
@@ -48,11 +48,14 @@ public @Data @NoArgsConstructor @AllArgsConstructor class RideRequestMessage {
 		request.setInputAddressPickup(laGuardia.getAddress());
 		request.setNumPassengers(partySize);
 		request.setRequestTime(requestTime);
-		request.setDropOffLocation(new Location(lonDropoff, latDropoff));
-		request.setPickUpLocation(laGuardia.getLocation());
+		request.setPickupByTime(requestTime);
+		request.setArriveByTime(0);
+		request.setDropoffLocation(new Location(lonDropoff, latDropoff));
+		request.setPickupLocation(laGuardia.getLocation());
 		request.setLuggage(luggage);
 		request.setRider(rider);
 		request.setNeighborhood(neighborhood);
+		request.setPickupHub(laGuardia);
 		return request;
 	}
 }

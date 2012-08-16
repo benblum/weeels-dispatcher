@@ -13,6 +13,7 @@ public @Data @NoArgsConstructor class Stop {
 	private int index;
 	private Location location;
 	private String address;
+	private long time;
 	
 	@DBRef
     private List<RideRequest> rideRequestsToPickUp = new ArrayList<RideRequest>();
@@ -50,4 +51,27 @@ public @Data @NoArgsConstructor class Stop {
 	public static Collection<Stop> fromJsonArrayToStops(String json) {
         return new JSONDeserializer<List<Stop>>().use(null, ArrayList.class).use("values", Stop.class).deserialize(json);
     }
+
+	// TODO: this will have to be made more rigorous, some kind of merging strategy
+	public boolean sameLocation(Stop stop) {
+		if(hub != null && stop.getHub() != null && hub.getId().equals(stop.getHub().getId()))
+			return true;
+		else if(Location.geoDistance(location, stop.getLocation()) < .01)
+			return true;
+
+		return false;
+	}
+	
+	public int getPassengerDelta() {
+		int delta = 0;
+		for(RideRequest r: rideRequestsToPickUp)
+			delta += r.getNumPassengers();
+		for(RideRequest r: rideRequestsToDropOff)
+			delta -= r.getNumPassengers();
+		return delta;
+	}
+	
+	public int getRideRequestDelta() {
+		return rideRequestsToPickUp.size() - rideRequestsToDropOff.size();
+	}
 }

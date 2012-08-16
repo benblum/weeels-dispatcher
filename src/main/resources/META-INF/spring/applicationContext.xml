@@ -50,6 +50,7 @@
     <context:annotation-config />
     <context:component-scan base-package="org.weeels.dispatcher">
         <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+ <!--       <context:exclude-filter expression="org.weeels.dispatcher.nyctpara.*" type="regex"/> -->
     </context:component-scan>
 
 </beans>

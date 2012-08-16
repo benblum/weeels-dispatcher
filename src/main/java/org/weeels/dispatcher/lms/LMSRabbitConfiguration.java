@@ -12,14 +12,21 @@ import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.weeels.dispatcher.config.RabbitConfiguration;
+import org.weeels.dispatcher.domain.Hub;
+import org.weeels.dispatcher.domain.Location;
 import org.weeels.dispatcher.lms.message.*;
+import org.weeels.dispatcher.repository.HubRepository;
 
 @Configuration
 public class LMSRabbitConfiguration extends RabbitConfiguration {
 
+	@Autowired
+	private HubRepository hubRepository;
+	
 	public static final String requestExchangeName = "node_to_java";
 	public static final String responseExchangeName = "java_to_node";
 	public static final String requestQueueName = "request";
@@ -111,5 +118,13 @@ public class LMSRabbitConfiguration extends RabbitConfiguration {
 		idClassMapping.put("passenger", RideRequestResponseMessage.class);
 		typeMapper.setIdClassMapping(idClassMapping);
 		return typeMapper;
+	}
+	
+	@Bean
+	public Hub laGuardia() {
+		Hub	laGuardia = hubRepository.findOneByName("LaGuardia");
+		if(laGuardia == null)
+			laGuardia = hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(-73.865199, 40.770739)));
+		return laGuardia;
 	}
 }

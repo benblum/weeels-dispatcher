@@ -3,7 +3,7 @@ package org.weeels.dispatcher.lms;
 import org.springframework.stereotype.Component;
 import org.weeels.dispatcher.domain.*;
 
-@Component
+//@Component
 public class LMSRideProposalComparator extends RideProposalComparator {
 	
 	public LMSRideProposalComparator() {

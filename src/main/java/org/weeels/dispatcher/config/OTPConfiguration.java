@@ -17,7 +17,7 @@ public class OTPConfiguration {
 	@Bean
 	GraphService graphService() {
 		GraphServiceImpl graphService = new GraphServiceImpl();
-		graphService.setPath("/Users/bblum/weeels/lms/ny");
+		graphService.setPath("/Users/bblum/weeels/OTPdata/graphs/laguardia-streets/");
 		return graphService;
 	}
 	

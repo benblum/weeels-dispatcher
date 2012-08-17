@@ -22,6 +22,8 @@ import org.opentripplanner.routing.services.PathService;
 import org.opentripplanner.routing.services.StreetVertexIndexService;
 import org.opentripplanner.routing.spt.GraphPath;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.weeels.dispatcher.domain.Hub;
 import org.weeels.dispatcher.domain.Itinerary;
 import org.weeels.dispatcher.domain.Location;
@@ -34,6 +36,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
+@Service
+@Qualifier("LMSTwoLeg")
 public class LMSTwoLegOTPItineraryServiceImpl extends BasicItineraryServiceImpl {
 	@Autowired 
 	private PathService pathService;
@@ -126,6 +130,20 @@ public class LMSTwoLegOTPItineraryServiceImpl extends BasicItineraryServiceImpl 
 			itinerary.insertStop(1, newStop);
 		}
 		return itinerary;
+	}
+
+
+	@Override
+	public Itinerary sharedItinerary(List<RideRequest> rideRequests) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public boolean possibleShare(Itinerary source, RideRequest rideRequest) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

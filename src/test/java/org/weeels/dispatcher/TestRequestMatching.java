@@ -48,6 +48,7 @@ public class TestRequestMatching {
 	@Autowired
 	private RiderRepository riderRepository;
 	@Autowired
+	@Qualifier("LMS")
 	private RideBookingRepository rideBookingRepository;
 	@Autowired
 	private RideProposalRepository rideProposalRepository;
@@ -72,46 +73,7 @@ public class TestRequestMatching {
 		return ret;
 	}
 	
-	public void test() {
-		amqpAdmin.purgeQueue(LMSRabbitConfiguration.requestQueueName, true);
-		amqpAdmin.purgeQueue(LMSRabbitConfiguration.responseQueueName, true);
-		rideRequestRepository.deleteAll();
-		riderRepository.deleteAll();
-		rideBookingRepository.deleteAll();
-		rideProposalRepository.deleteAll();
-		
-		RideRequestMessage msg = new RideRequestMessage();
-		msg.setEmail("benblum@gmail.com");
-		msg.setInputAddressDropoff("");
-		msg.setFormattedAddressDropoff("");
-		msg.setLuggage(LuggageSize.low);
-		msg.setNeighborhood("Manhattan");
-		msg.setPartySize(1);
-		msg.setRequestTime(0);
-		
-		msg.setName("AA");
-		msg.setLatDropoff(BedfordHouse.getLocation().getLat());
-		msg.setLonDropoff(BedfordHouse.getLocation().getLon());
-		msg.setRequestTime(12334560);
-		lmsRequestTemplate.convertAndSend(msg);
-		
-		msg.setName("BB");
-		msg.setLatDropoff(Downtown.getLocation().getLat());
-		msg.setLonDropoff(Downtown.getLocation().getLon());
-		msg.setRequestTime(12334562);
-		lmsRequestTemplate.convertAndSend(msg);
-		
-		msg.setName("CC");
-		msg.setLatDropoff(BroadwayHouse.getLocation().getLat());
-		msg.setLonDropoff(BroadwayHouse.getLocation().getLon());
-		msg.setRequestTime(12334561);
-		lmsRequestTemplate.convertAndSend(msg);
-		MatchMessage match = (MatchMessage)poll(lmsResponseTemplate);		
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		
-	}
-	
-	public void testAll() {
+	private void clearQueues() {
 		amqpAdmin.purgeQueue(LMSRabbitConfiguration.requestQueueName, true);
 		amqpAdmin.purgeQueue(LMSRabbitConfiguration.responseQueueName, true);
 		rideRequestRepository.deleteAll();
@@ -120,155 +82,75 @@ public class TestRequestMatching {
 		rideProposalRepository.deleteAll();
 		mongoTemplate.indexOps(RideBooking.class).ensureIndex(new GeospatialIndex("itinerary.destination"));
 		mongoTemplate.indexOps(RideProposal.class).ensureIndex(new GeospatialIndex("itinerary.destination"));
-		
+	}
+	
+	private void makeRequest(String name, Stop stop, long time) {
 		RideRequestMessage msg = new RideRequestMessage();
 		msg.setEmail("benblum@gmail.com");
 		msg.setInputAddressDropoff("");
 		msg.setFormattedAddressDropoff("");
 		msg.setLuggage(LuggageSize.low);
-		msg.setNeighborhood("Manhattan");
+		msg.setNeighborhood("New Yorkish");
 		msg.setPartySize(1);
 		msg.setRequestTime(0);
-		
-		msg.setName("AA");
-		msg.setLatDropoff(BedfordHouse.getLocation().getLat());
-		msg.setLonDropoff(BedfordHouse.getLocation().getLon());
-		msg.setRequestTime(12334560);
+		msg.setName(name);
+		msg.setLatDropoff(stop.getLocation().getLat());
+		msg.setLonDropoff(stop.getLocation().getLon());
+		msg.setRequestTime(time);
 		lmsRequestTemplate.convertAndSend(msg);
-		
-		msg.setName("BB");
-		msg.setLatDropoff(Downtown.getLocation().getLat());
-		msg.setLonDropoff(Downtown.getLocation().getLon());
-		msg.setRequestTime(12334562);
-		lmsRequestTemplate.convertAndSend(msg);
-		
-		msg.setName("CC");
-		msg.setLatDropoff(BroadwayHouse.getLocation().getLat());
-		msg.setLonDropoff(BroadwayHouse.getLocation().getLon());
-		msg.setRequestTime(12334561);
-		lmsRequestTemplate.convertAndSend(msg);
-		
-		msg.setName("DD");
-		msg.setLatDropoff(BroadwayHouse.getLocation().getLat());
-		msg.setLonDropoff(BroadwayHouse.getLocation().getLon());
-		msg.setRequestTime(12334562);
-		lmsRequestTemplate.convertAndSend(msg);
-		
-		msg.setName("EE");
-		msg.setLatDropoff(BedfordHouse.getLocation().getLat());
-		msg.setLonDropoff(BedfordHouse.getLocation().getLon());
-		msg.setRequestTime(12334561);
-		
-		RideBooking booking;
 		RideRequestResponseMessage response = (RideRequestResponseMessage)poll(lmsResponseTemplate);
-		assert(response.getName().equals("AA"));
-		response = (RideRequestResponseMessage)poll(lmsResponseTemplate);
-		assert(response.getName().equals("BB"));
-		response = (RideRequestResponseMessage)poll(lmsResponseTemplate);
-		assert(response.getName().equals("CC"));
-		MatchMessage match = (MatchMessage)poll(lmsResponseTemplate);
-		booking = rideBookingRepository.findOne(match.getMatchId());
-		System.out.println("Received match: "+booking.getRideRequests().get(0).getRider().getName() + 
-				" and "+booking.getRideRequests().get(1).getRider().getName());	
-		Assert.assertEquals("AA",booking.getRideRequests().get(0).getRider().getName());
-		Assert.assertEquals("CC",booking.getRideRequests().get(1).getRider().getName());
-		
-		response = (RideRequestResponseMessage)poll(lmsResponseTemplate);
-		assert(response.getName().equals("DD"));
-		response = (RideRequestResponseMessage)poll(lmsResponseTemplate);
-		assert(response.getName().equals("EE"));
-		match = (MatchMessage) poll(lmsResponseTemplate);
-		booking = rideBookingRepository.findOne(match.getMatchId());
-		System.out.println("Received match: "+booking.getRideRequests().get(0).getRider().getName() + 
-				" and "+booking.getRideRequests().get(1).getRider().getName());	
-		Assert.assertEquals("DD",booking.getRideRequests().get(0).getRider().getName());
-		Assert.assertEquals("EE",booking.getRideRequests().get(1).getRider().getName());
-		
-	/*
-		RideRequestMessage requestA = new RideRequestMessage("A", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage requestB = new RideRequestMessage("B", "LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
-				"Columbia University", 40.712346,-73.962665,40.80801,-73.963169, 1, 12334562, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage requestC = new RideRequestMessage("C", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		RideRequestMessage requestD = new RideRequestMessage("D", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		ExpireRequestMessage expireC = new ExpireRequestMessage("C", true);
-		RideRequestMessage requestE = new RideRequestMessage("E", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		
-		lmsRequestTemplate.convertAndSend(requestA);
-		lmsRequestTemplate.convertAndSend(requestB);
-		lmsRequestTemplate.convertAndSend(requestC);
-		lmsRequestTemplate.convertAndSend(requestD);
-		lmsRequestTemplate.convertAndSend(expireC);
-		lmsRequestTemplate.convertAndSend(requestE);
-		
-		
-		match = (MatchMessage)poll(lmsResponseTemplate);		
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("BB",match.requestIds[0]);
-		Assert.assertEquals("B",match.requestIds[1]);
-		match = (MatchMessage) poll(lmsResponseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("A",match.requestIds[0]);
-		Assert.assertEquals("C",match.requestIds[1]);
-		match = (MatchMessage) poll(lmsResponseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("D",match.requestIds[0]);
-		Assert.assertEquals("A",match.requestIds[1]);
+		assert(response.getName().equals(name));
+	}
 	
-		 requestA = new RideRequestMessage("AAA", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		 requestB = new RideRequestMessage("BBB", "LaGuardia","LaGuardia","2960 Broadway, New York NY 10013", 
-				"Columbia University", 40.712346,-73.962665,40.80801,-73.963169, 1, 12334562, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		 requestC = new RideRequestMessage("CCC", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		 requestD = new RideRequestMessage("DDD", "LaGuardia","LaGuardia","496 Broadway, Brooklyn NY 11211", 
-				"496 broadway, brooklyn", 40.712346,-73.962665,40.705595,-73.950734, 1, 12334561, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
-		 requestE = new RideRequestMessage("EEE", "LaGuardia","LaGuardia","337 Bedford Ave, Brooklyn NY 11211", 
-				"337 bedford", 40.712346,-73.962665,40.712346,-73.962665, 1, 12334560, LuggageSize.low, "Bob", "bob@gmail.com", "New York");
+	private MatchMessage checkMatch(String name1, String name2) {
+		MatchMessage match = (MatchMessage)poll(lmsResponseTemplate);
+		RideBooking booking = rideBookingRepository.findOne(match.getMatchId());
+		System.out.println("Received match: "+booking.getRideRequests().get(0).getRider().getName() + 
+				" and "+booking.getRideRequests().get(1).getRider().getName());	
+		Assert.assertEquals(name1,booking.getRideRequests().get(0).getRider().getName());
+		Assert.assertEquals(name2,booking.getRideRequests().get(1).getRider().getName());
+		return match;
+	}
+	
+	@Test
+	public void testAll() {
+		clearQueues();
 		
-		lmsRequestTemplate.convertAndSend(requestA);
+		makeRequest("A", BedfordHouse, 12334560);
+		makeRequest("B", Downtown, 12334562);
+		makeRequest("C", BroadwayHouse, 12334561);
+		checkMatch("A", "C");
+		makeRequest("D", BroadwayHouse, 12334562);
+		makeRequest("E", BedfordHouse, 12334561);
+		checkMatch("D","E");
+
+		makeRequest("AA", BedfordHouse, 12334560);
+		makeRequest("BB", Downtown, 12334562);
+		checkMatch("B", "BB");
+		makeRequest("CC", BroadwayHouse, 12334561);
+		checkMatch("AA", "CC");
+		makeRequest("DD", BroadwayHouse, 12334562);
+		lmsRequestTemplate.convertAndSend(new ExpireRequestMessage("CC", true));
+		checkMatch("DD","AA");
+		makeRequest("EE", BedfordHouse, 12334561);
 		
-		 match = (MatchMessage)poll(lmsResponseTemplate);		
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("E",match.requestIds[0]);
-		Assert.assertEquals("AAA",match.requestIds[1]);
-		
-		ExpireMatchMessage expireAAAE = new ExpireMatchMessage(match.matchId,true);
-		lmsRequestTemplate.convertAndSend(requestB);
-		lmsRequestTemplate.convertAndSend(requestC);
-		lmsRequestTemplate.convertAndSend(requestD);
-		lmsRequestTemplate.convertAndSend(requestE);
-		lmsRequestTemplate.convertAndSend(expireAAAE);
-		match = (MatchMessage)poll(lmsResponseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("CCC",match.requestIds[0]);
-		Assert.assertEquals("DDD",match.requestIds[1]);
-		match = (MatchMessage)poll(lmsResponseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		Assert.assertEquals("EEE",match.requestIds[0]);
-		Assert.assertEquals("E",match.requestIds[1]);
-		
-		ExpireMatchMessage expireEEEE = new ExpireMatchMessage(match.matchId,true);
-		MatchRequestMessage matchEEEE = new MatchRequestMessage(match.requestIds[0],match.requestIds[1]);
-		
-		lmsRequestTemplate.convertAndSend(expireEEEE);
-		
-		match = (MatchMessage) poll(lmsResponseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);
-		ExpireMatchMessage expireAAAEEE = new ExpireMatchMessage(match.matchId,true);
-		lmsRequestTemplate.convertAndSend(expireAAAEEE);
-		lmsRequestTemplate.convertAndSend(matchEEEE);
-		match = (MatchMessage) poll(lmsResponseTemplate);
-		System.out.println("Received match: "+match.requestIds[0] + " and "+match.requestIds[1]);	
-		
-		Assert.assertEquals("EEE",match.requestIds[0]);
-		Assert.assertEquals("E",match.requestIds[1]);	
-		*/
+		makeRequest("AAA", BedfordHouse, 12334560);
+		String matchId = checkMatch("EE", "AAA").getMatchId();
+		makeRequest("BBB", Downtown, 12334562);
+		makeRequest("CCC", BroadwayHouse, 12334561);
+		makeRequest("DDD", BroadwayHouse, 12334562);
+		checkMatch("CCC","DDD");
+		lmsRequestTemplate.convertAndSend(new ExpireMatchMessage(matchId, true));
+		makeRequest("EEE", BedfordHouse, 12334561);
+		MatchMessage match = checkMatch("EEE", "EE");
+		lmsRequestTemplate.convertAndSend(new ExpireMatchMessage(match.getMatchId(), true));
+		matchId = checkMatch("AAA", "EE").getMatchId();
+		lmsRequestTemplate.convertAndSend(new ExpireMatchMessage(matchId, true));
+		lmsRequestTemplate.convertAndSend(new MatchRequestMessage(match.requestIds[0],match.requestIds[1]));
+		checkMatch("EEE","EE");
 	}
 
+	@Test
 	public void testStateMessage() {
 		lmsRequestTemplate.convertAndSend(new StateRequestMessage());
 	}

@@ -7,8 +7,7 @@ import org.weeels.dispatcher.domain.RideRequest;
 import org.weeels.dispatcher.domain.Stop;
 import org.weeels.dispatcher.service.ItineraryService;
 
-@Service
-public class BasicItineraryServiceImpl implements ItineraryService {
+public abstract class BasicItineraryServiceImpl implements ItineraryService {
 
 	@Override
 	public Itinerary soloItinerary(RideRequest rideRequest) {
@@ -68,15 +67,9 @@ public class BasicItineraryServiceImpl implements ItineraryService {
 	}
 	
 	@Override
-	public Itinerary sharedItinerary(List<RideRequest> rideRequests) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract Itinerary sharedItinerary(List<RideRequest> rideRequests);
 
 	@Override
-	public boolean possibleShare(Itinerary source, RideRequest rideRequest) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean possibleShare(Itinerary source, RideRequest rideRequest);
 
 }

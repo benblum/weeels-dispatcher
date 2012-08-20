@@ -16,7 +16,7 @@ import org.weeels.dispatcher.repository.RideBookingRepository;
 import org.weeels.dispatcher.service.BasicRideBookingServiceImpl;
 
 @Service
-@Qualifier("LMS")
+@Qualifier("LMSTwoLegOTP")
 public class LMSTwoLegOTPRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 	@Autowired
 	protected RideBookingRepository rideBookingRepository;

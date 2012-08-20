@@ -1,6 +1,7 @@
 package org.weeels.dispatcher.config;
 
 import org.opentripplanner.routing.algorithm.GenericAStar;
+import org.opentripplanner.routing.graph.Graph.LoadLevel;
 import org.opentripplanner.routing.impl.GraphServiceImpl;
 import org.opentripplanner.routing.impl.RetryingPathServiceImpl;
 import org.opentripplanner.routing.impl.StreetVertexIndexServiceImpl;
@@ -17,28 +18,21 @@ public class OTPConfiguration {
 	@Bean
 	GraphService graphService() {
 		GraphServiceImpl graphService = new GraphServiceImpl();
+		graphService.setLoadLevel(LoadLevel.NO_HIERARCHIES);
 		graphService.setPath("/Users/bblum/weeels/OTPdata/graphs/laguardia-streets/");
 		return graphService;
 	}
 	
 	@Bean
-	StreetVertexIndexService streetVertexIndexService() {
-		StreetVertexIndexServiceImpl indexService = new StreetVertexIndexServiceImpl(graphService().getGraph(), distanceLibrary());
-		return indexService;
-	}
-	
-	@Bean
-	DistanceLibrary distanceLibrary() {
-		return SphericalDistanceLibrary.getInstance();
-	}
-	
-	@Bean
-	SPTService stpService() {
+	SPTService sptService() {
 		return new GenericAStar();
 	}
 	
 	@Bean
 	PathService pathService() {
-		return new RetryingPathServiceImpl();
+		RetryingPathServiceImpl pathService = new RetryingPathServiceImpl();
+		pathService.graphService = graphService();
+		pathService.sptService = sptService();
+		return pathService;
 	}
 }

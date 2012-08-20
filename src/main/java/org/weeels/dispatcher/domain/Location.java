@@ -46,4 +46,8 @@ public @Data @AllArgsConstructor @NoArgsConstructor class Location {
 	public Coordinate toCoordinate() {
 		return new Coordinate(lon, lat);
 	}
+
+	public String toOTPString() {
+		return new StringBuilder().append(lat).append(',').append(lon).toString();
+	}
 }

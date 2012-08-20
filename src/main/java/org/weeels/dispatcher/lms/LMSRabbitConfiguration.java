@@ -124,7 +124,7 @@ public class LMSRabbitConfiguration extends RabbitConfiguration {
 	public Hub laGuardia() {
 		Hub	laGuardia = hubRepository.findOneByName("LaGuardia");
 		if(laGuardia == null)
-			laGuardia = hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(-73.865199, 40.770739)));
+			laGuardia = hubRepository.save(new Hub("LaGuardia", "LaGuardia", new Location(-73.8737, 40.7721)));
 		return laGuardia;
 	}
 }

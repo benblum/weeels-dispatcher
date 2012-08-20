@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 public @Data @NoArgsConstructor class Itinerary {
 	
 	private Location destination;
-	private String destinationLabel;
 	private Location origin;
-	private String originLabel;
 	private List<Stop> stops = new ArrayList<Stop>();
 	
 	public Itinerary(Itinerary other) {

@@ -1,12 +1,6 @@
 package org.weeels.dispatcher;
 
 import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -73,6 +67,7 @@ public class TestRequestMatching {
 		return ret;
 	}
 	
+	@Before
 	private void clearQueues() {
 		amqpAdmin.purgeQueue(LMSRabbitConfiguration.requestQueueName, true);
 		amqpAdmin.purgeQueue(LMSRabbitConfiguration.responseQueueName, true);
@@ -99,7 +94,7 @@ public class TestRequestMatching {
 		msg.setRequestTime(time);
 		lmsRequestTemplate.convertAndSend(msg);
 		RideRequestResponseMessage response = (RideRequestResponseMessage)poll(lmsResponseTemplate);
-		assert(response.getName().equals(name));
+		assertEquals(response.getName(),name);
 	}
 	
 	private MatchMessage checkMatch(String name1, String name2) {
@@ -107,15 +102,13 @@ public class TestRequestMatching {
 		RideBooking booking = rideBookingRepository.findOne(match.getMatchId());
 		System.out.println("Received match: "+booking.getRideRequests().get(0).getRider().getName() + 
 				" and "+booking.getRideRequests().get(1).getRider().getName());	
-		Assert.assertEquals(name1,booking.getRideRequests().get(0).getRider().getName());
-		Assert.assertEquals(name2,booking.getRideRequests().get(1).getRider().getName());
+		assertEquals(name1,booking.getRideRequests().get(0).getRider().getName());
+		assertEquals(name2,booking.getRideRequests().get(1).getRider().getName());
 		return match;
 	}
 	
 	@Test
 	public void testAll() {
-		clearQueues();
-		
 		makeRequest("A", BedfordHouse, 12334560);
 		makeRequest("B", Downtown, 12334562);
 		makeRequest("C", BroadwayHouse, 12334561);

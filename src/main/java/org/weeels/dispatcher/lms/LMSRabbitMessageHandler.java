@@ -34,7 +34,7 @@ public class LMSRabbitMessageHandler {
 	@Autowired
 	private HubRepository hubRepository;
 	@Autowired
-	@Qualifier("LMSTwoLeg")
+	@Qualifier("LMSTwoLegOTP")
 	private RideBookingService rideBookingService;
 	@Autowired
 	private RabbitTemplate lmsResponseTemplate;

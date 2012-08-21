@@ -5,6 +5,7 @@ import org.opentripplanner.routing.graph.Graph.LoadLevel;
 import org.opentripplanner.routing.impl.GraphServiceImpl;
 import org.opentripplanner.routing.impl.RetryingPathServiceImpl;
 import org.opentripplanner.routing.impl.StreetVertexIndexServiceImpl;
+import org.opentripplanner.routing.impl.TravelingSalesmanPathService;
 import org.opentripplanner.routing.services.GraphService;
 import org.opentripplanner.routing.services.PathService;
 import org.opentripplanner.routing.services.SPTService;
@@ -19,7 +20,7 @@ public class OTPConfiguration {
 	GraphService graphService() {
 		GraphServiceImpl graphService = new GraphServiceImpl();
 		graphService.setLoadLevel(LoadLevel.NO_HIERARCHIES);
-		graphService.setPath("/Users/bblum/weeels/OTPdata/graphs/laguardia-streets/");
+		graphService.setPath("/Users/bblum/weeels/OTPdata/graphs/greater-nyc-streets/");
 		return graphService;
 	}
 	
@@ -34,5 +35,12 @@ public class OTPConfiguration {
 		pathService.graphService = graphService();
 		pathService.sptService = sptService();
 		return pathService;
+	}
+	
+	@Bean
+	TravelingSalesmanPathService tspPathService() {
+		TravelingSalesmanPathService tspPathService = new TravelingSalesmanPathService();
+		tspPathService.setChainedPathService(pathService());
+		return tspPathService;
 	}
 }

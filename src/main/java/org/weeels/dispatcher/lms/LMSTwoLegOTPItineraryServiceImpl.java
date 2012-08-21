@@ -17,6 +17,7 @@ import org.opentripplanner.routing.edgetype.StreetTransitLink;
 import org.opentripplanner.routing.graph.Edge;
 import org.opentripplanner.routing.graph.Graph;
 import org.opentripplanner.routing.graph.Vertex;
+import org.opentripplanner.routing.impl.TravelingSalesmanPathService;
 import org.opentripplanner.routing.services.GraphService;
 import org.opentripplanner.routing.services.PathService;
 import org.opentripplanner.routing.services.StreetVertexIndexService;
@@ -40,32 +41,30 @@ import com.vividsolutions.jts.index.strtree.STRtree;
 @Qualifier("LMSTwoLegOTP")
 public class LMSTwoLegOTPItineraryServiceImpl extends BasicItineraryServiceImpl {
 	@Autowired 
-	private PathService pathService;
+	private TravelingSalesmanPathService tspPathService;
 	@Autowired
 	private GraphService graphService;
-	private StreetVertexIndexService indexService;
 	@Autowired
 	private Hub laGuardia;
 	
-	private String laGuardiaOTP;
-	
-	private RoutingRequest routingRequestTemplate = new RoutingRequest();
-	
-	
-	@PostConstruct
-	void initRoutingRequestTemplate() {
-		indexService = graphService.getGraph().streetIndex;
+	RoutingRequest newRoutingRequest(String from, String to, Date date) {
+		RoutingRequest routingRequestTemplate = new RoutingRequest();
+		routingRequestTemplate.setFrom(from);
+		routingRequestTemplate.setTo(to);
+		routingRequestTemplate.setDateTime(date);
 		routingRequestTemplate.setModes(new TraverseModeSet(TraverseMode.CAR));
-		laGuardiaOTP = laGuardia.getLocation().toOTPString();
+		routingRequestTemplate.setShowIntermediateStops(true);
+		routingRequestTemplate.setIntermediatePlacesOrdered(true);
+		return routingRequestTemplate;
 	}
 
 
 	@Override
 	public Itinerary soloItinerary(RideRequest rideRequest) {
-	  routingRequestTemplate.setFrom(laGuardiaOTP);
-	  routingRequestTemplate.setTo(rideRequest.getDropoffLocation().toOTPString());
-	  routingRequestTemplate.setDateTime(new Date(rideRequest.getPickupByTime()));
-	  List<GraphPath> gps = pathService.getPaths(routingRequestTemplate);
+		String laGuardiaOTP = laGuardia.getLocation().toOTPString();
+		
+		RoutingRequest routingRequest = newRoutingRequest(laGuardiaOTP, rideRequest.getDropoffLocation().toOTPString(), new Date(rideRequest.getPickupByTime()));
+	  List<GraphPath> gps = tspPathService.getPaths(routingRequest);
 	  if(gps == null || gps.size() == 0)
 			return null;
 	  GraphPath gp = gps.get(0);
@@ -73,45 +72,49 @@ public class LMSTwoLegOTPItineraryServiceImpl extends BasicItineraryServiceImpl 
 	  itinerary.addStop(makeNewPickupStop(rideRequest));
 	  itinerary.addStop(makeNewDropoffStop(rideRequest, gp.getDuration()));
 	  rideRequest.setSoloDuration(gp.getDuration());
+	  System.out.println("Solo duration: " + gp.getDuration() + " stops: " + gp.states.size());
+	  
 	  // TODO: Add gp's Origin and end vertex and distance info. 
 	  return itinerary;
 	}
 	
 	@Override
 	public Itinerary sharedItinerary(Itinerary source, RideRequest rideRequest) {
+		String laGuardiaOTP = laGuardia.getLocation().toOTPString();
 		String requestDestination = rideRequest.getDropoffLocation().toOTPString();
 		String sourceDestination = source.getDestination().toOTPString();
 		Date pickupDate = new Date(rideRequest.getPickupByTime());
+		System.out.println("Searching for shared ride for " + sourceDestination + " and " + requestDestination);
 		
-		routingRequestTemplate.setFrom(laGuardiaOTP);
-		routingRequestTemplate.setTo(requestDestination);
-		routingRequestTemplate.setDateTime(pickupDate);
-		List<GraphPath> gps = pathService.getPaths(routingRequestTemplate);
+		RoutingRequest routingRequest = newRoutingRequest(laGuardiaOTP, requestDestination, pickupDate);
+		List<GraphPath> gps = tspPathService.getPaths(routingRequest);
 		if(gps == null || gps.size() == 0)
 			return null;
 		GraphPath gp = gps.get(0);
 		rideRequest.setSoloDuration(gp.getDuration());
-			
-		routingRequestTemplate.setFrom(laGuardiaOTP);
+		System.out.println("Shared solo duration: " + gp.getDuration() + " stops: " + gp.states.size());
+		
+		RoutingRequest routingRequest2 = newRoutingRequest(laGuardiaOTP, requestDestination, pickupDate);
 		List<String> middle = new LinkedList<String>();
-		  
 		middle.add(sourceDestination);
-		routingRequestTemplate.setIntermediatePlaces(middle);
-		routingRequestTemplate.setTo(requestDestination);
-		routingRequestTemplate.setDateTime(pickupDate);
-		List<GraphPath> itineraryFirst = pathService.getPaths(routingRequestTemplate);
+		routingRequest2.setIntermediatePlaces(middle);
+		List<GraphPath> itineraryFirst = tspPathService.getPaths(routingRequest2);
 		GraphPath gpItineraryFirst = null;
 		if(itineraryFirst != null && itineraryFirst.size() > 0)
 			gpItineraryFirst = itineraryFirst.get(0);
+		System.out.println("Itinerary first duration: " + gpItineraryFirst.getDuration() + " stops: " + gpItineraryFirst.states.size());
 		
 		middle.clear();
 		middle.add(requestDestination);
-		routingRequestTemplate.setIntermediatePlaces(middle);
-		routingRequestTemplate.setTo(sourceDestination);
-		List<GraphPath> requestFirst = pathService.getPaths(routingRequestTemplate);
+		RoutingRequest routingRequest3 = newRoutingRequest(laGuardiaOTP, sourceDestination, pickupDate);
+	
+		routingRequest3.setIntermediatePlaces(middle);
+		List<GraphPath> requestFirst = tspPathService.getPaths(routingRequest3);
 		GraphPath gpRequestFirst = null;
 		if(requestFirst != null && requestFirst.size() > 0)
 			gpRequestFirst = requestFirst.get(0);
+		System.out.println("Request first duration: " + gpRequestFirst.getDuration() + " stops: " + gpRequestFirst.states.size());
+		 
 		
 		Stop newStop = makeNewDropoffStop(rideRequest, 0);
 		Itinerary itinerary = new Itinerary(source);

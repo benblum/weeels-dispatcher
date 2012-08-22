@@ -24,8 +24,6 @@ public @Data @NoArgsConstructor class RideBooking {
 
     private Itinerary itinerary;
     
-    private Map<String, Itinerary> soloItineraries = new HashMap<String, Itinerary>();
- 
     private BookingStatus status;
     
 	@Id
@@ -38,14 +36,12 @@ public @Data @NoArgsConstructor class RideBooking {
 		super();
 		rideRequests.add(rideProposal.getRideRequest());
 		this.itinerary = rideProposal.getItinerary();
-		soloItineraries.put(rideProposal.getRideRequest().getId(), this.itinerary);
 		numPassengers = rideProposal.getRideRequest().getNumPassengers();
 		pickupTime = rideProposal.getRideRequest().getRequestTime();
 	}
 	
-	public void addRideRequest(RideRequest rideRequest, Itinerary soloItinerary) {
+	public void addRideRequest(RideRequest rideRequest) {
 		rideRequests.add(rideRequest);
-		soloItineraries.put(rideRequest.getId(), soloItinerary);
 		numPassengers += rideRequest.getNumPassengers();
 		pickupTime = Math.min(pickupTime,  rideRequest.getRequestTime());
 	}

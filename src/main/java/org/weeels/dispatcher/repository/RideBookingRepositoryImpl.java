@@ -154,6 +154,19 @@ public class RideBookingRepositoryImpl implements CustomRideBookingRepository {
 		return retVal;
 	}
 	
+
+	@Override
+	public List<RideBooking> find(RideRequest rideRequest,
+			BookingStatus status, int maxRiders, long timeRadius,
+			Location origin, double radius) {
+		Criteria good = Criteria.where("numPassengers").lte(maxRiders)
+				.and("status").is(status.name())
+				.and("itinerary.origin").nearSphere(new Point(origin.getLon(), origin.getLat())).maxDistance(radius)
+				.andOperator(Criteria.where("pickupTime").gte(rideRequest.getRequestTime()-timeRadius), Criteria.where("pickupTime").lte(rideRequest.getRequestTime()+timeRadius));
+		return mongoTemplate.find(new Query(good), RideBooking.class);
+	}
+
+	
 	@Override
 	public void unlock(RideRequest rideRequest) {
 		mongoTemplate.updateMulti(new Query(Criteria.where("lockedBy").is(new ObjectId(rideRequest.getId()))), 

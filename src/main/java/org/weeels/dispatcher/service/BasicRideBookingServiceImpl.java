@@ -45,9 +45,9 @@ public abstract class BasicRideBookingServiceImpl implements RideBookingService 
 		// Gets potential shares via maximum riders, no previous cancelation, etc
 		List<RideBooking> potentialRideBookings = null;
 		try {
-			potentialRideBookings = findPotentials(rideRequest);
 			List<RideProposal> rideProposals = new ArrayList<RideProposal>();
 			rideProposals.add(openSoloProposal(rideRequest));
+			potentialRideBookings = findPotentials(rideRequest);
 			potentialRideBookings = rideBookingRepository.lock(potentialRideBookings, rideRequest);
 			for(RideBooking rideBookingToUpdate : potentialRideBookings) {
 				rideProposals.add(makeSharedProposal(rideBookingToUpdate, rideRequest));
@@ -111,6 +111,10 @@ public abstract class BasicRideBookingServiceImpl implements RideBookingService 
 	@Override
 	public RideProposal openSoloProposal(RideRequest rideRequest) {
 		Itinerary itinerary = itineraryService.soloItinerary(rideRequest);
+		if(itinerary == null)
+			return null;
+		rideRequest.setSoloDuration(itinerary.getDuration());
+		rideRequestRepository.save(rideRequest);
 		return rideProposalRepository.save(new RideProposal(itinerary, rideRequest, null));
 	}
 

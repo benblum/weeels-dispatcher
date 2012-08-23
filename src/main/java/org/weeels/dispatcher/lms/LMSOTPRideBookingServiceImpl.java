@@ -17,7 +17,7 @@ import org.weeels.dispatcher.service.BasicRideBookingServiceImpl;
 
 @Service
 @Qualifier("LMSTwoLegOTP")
-public class LMSTwoLegOTPRideBookingServiceImpl extends BasicRideBookingServiceImpl {
+public class LMSOTPRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 	@Autowired
 	protected RideBookingRepository rideBookingRepository;
 	
@@ -40,6 +40,7 @@ public class LMSTwoLegOTPRideBookingServiceImpl extends BasicRideBookingServiceI
 	}
 	
 	@Override
+	// Automatically close rides of two people to further sharing
 	public RideBooking bookRide(RideProposal rideProposal) {
 		RideBooking rideBooking = super.bookRide(rideProposal);
 		if(rideBooking == null)

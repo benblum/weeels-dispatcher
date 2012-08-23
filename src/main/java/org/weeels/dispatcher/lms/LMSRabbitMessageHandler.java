@@ -53,6 +53,10 @@ public class LMSRabbitMessageHandler {
 			rideRequest = rideRequestRepository.save(rideRequest);
 			lmsResponseTemplate.convertAndSend(new RideRequestResponseMessage(rideRequest));
 			RideBooking rideBooking = openAndBookProposal(rideRequest);
+			if(rideBooking == null) {
+				logger.error("Failed to route to destination. Perhaps not a street address?");
+				return;
+			}
 			if(rideBooking.getRideRequests().size() > 1)
 				lmsResponseTemplate.convertAndSend(new MatchMessage(rideBooking));
 		} catch(Exception e) {
@@ -62,6 +66,8 @@ public class LMSRabbitMessageHandler {
 	
 	private RideBooking openAndBookProposal(RideRequest request) {
 		List<RideProposal> rideProposals = rideBookingService.openProposals(request, 1);
+		if(rideProposals == null || rideProposals.size() == 0)
+			return null;
 		RideProposal bestProposal = rideProposals.get(0); // Best ranked
 		//logger.info("Trying to book " + bestProposal.getRideBookingToUpdate() + " for " + request.getId());
 		return rideBookingService.bookRide(bestProposal);	

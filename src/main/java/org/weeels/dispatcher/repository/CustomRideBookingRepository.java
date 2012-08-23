@@ -33,6 +33,9 @@ public interface CustomRideBookingRepository {
 	public List<RideBooking> find(RideRequest rideRequest, 
 			BookingStatus status, int maxRiders, long timeRadius, 
 			Location origin, Location destination, double radius);
+	public List<RideBooking> find(RideRequest rideRequest, 
+			BookingStatus status, int maxRiders, long timeRadius, 
+			Location origin, double radius);
 	public RideBooking findOneByRideRequestsId(String id);
 	public RideBooking findOneByStatusAndAllRideRequestsId(BookingStatus status,
 			List<ObjectId> rideRequestIds);

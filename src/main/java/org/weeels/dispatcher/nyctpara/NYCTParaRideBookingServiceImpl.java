@@ -26,8 +26,8 @@ public class NYCTParaRideBookingServiceImpl extends BasicRideBookingServiceImpl 
 		
 		List<RideBooking> totalBookings = rideBookingRepository.find(
 				rideRequest, RideBooking.BookingStatus.OPEN, maxRiders, TIME_DIFF,
-				rideRequest.getPickupLocation(), rideRequest.getDropoffLocation(), MAX_DROPOFF_SEPARATION / RADIUS_OF_EARTH);
-		
+				rideRequest.getPickupLocation(), MAX_DROPOFF_SEPARATION / RADIUS_OF_EARTH);
+		System.out.println("Found " + totalBookings.size() + " potentials.");
 		return totalBookings;
 	}
 

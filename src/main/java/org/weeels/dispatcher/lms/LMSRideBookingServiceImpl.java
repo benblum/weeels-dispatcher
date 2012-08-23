@@ -15,8 +15,8 @@ import org.weeels.dispatcher.domain.RideRequest;
 import org.weeels.dispatcher.repository.RideBookingRepository;
 import org.weeels.dispatcher.service.BasicRideBookingServiceImpl;
 
-@Service
-@Qualifier("LMS")
+//@Service
+//@Qualifier("LMS")
 public class LMSRideBookingServiceImpl extends BasicRideBookingServiceImpl {
 	@Autowired
 	protected RideBookingRepository rideBookingRepository;
